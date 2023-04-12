@@ -118,6 +118,12 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 
   return newRequire;
 })({"src/js/localStorage.js":[function(require,module,exports) {
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 var books = [];
 
 // CONSTRUCTOR FUNCTION TO POPULATE BOOK OBJECT WITH FORM DATA
@@ -135,13 +141,14 @@ function Book(id, name, author, category, year, price, artwork) {
 function addNewBook(event) {
   event.preventDefault();
   var form = document.getElementById("new-book-form");
-  var book = new Book(books.length + 1, form.elements[0].value, form.elements[1].value, form.elements[2].value, form.elements[3].value, parseFloat(form.elements[4].value), form.elements[5].value);
+  var storedBooks = JSON.parse(localStorage.getItem("books")) || [];
+  var book = new Book(storedBooks.length + 1, form.elements[0].value, form.elements[1].value, form.elements[2].value, form.elements[3].value, parseFloat(form.elements[4].value), form.elements[5].value);
 
-  //   PUSHES NEW BOOK OBEJCT TO BOOKS ARRAY
-  books.push(book);
+  // APPEND THE NEW BOOK TO THE ARRAY AT LOCALSTORAGE
+  var updatedBooks = [].concat(_toConsumableArray(storedBooks), [book]);
 
-  //   SETS BOOK OBJECT IN LOCALSTORAGE ARRAY
-  localStorage.setItem("books", JSON.stringify(books));
+  //   SETS UPDATED BOOKS ARRAY IN LOCALSTORAGE
+  localStorage.setItem("books", JSON.stringify(updatedBooks));
   form.reset();
 }
 
@@ -173,7 +180,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49755" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51762" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

@@ -118,47 +118,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 
   return newRequire;
 })({"src/js/index.js":[function(require,module,exports) {
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-var books = [];
 
-// CONSTRUCTOR FUNCTION TO POPULATE BOOK OBJECT WITH FORM DATA
-function Book(id, name, author, category, year, price, artwork) {
-  this.id = id;
-  this.name = name;
-  this.author = author;
-  this.category = category;
-  this.year = year;
-  this.price = price;
-  this.artwork = artwork;
-}
-
-// COLLECTS FORM DATA AND CREATES NEW OBJECT
-function addNewBook(event) {
-  event.preventDefault();
-  var form = document.getElementById("new-book-form");
-
-  // retrieve existing books from localStorage or initialize to an empty array
-  var storedBooks = JSON.parse(localStorage.getItem("books")) || [];
-  var book = new Book(storedBooks.length + 1,
-  // use the length of storedBooks instead of books
-  form.elements[0].value, form.elements[1].value, form.elements[2].value, form.elements[3].value, parseFloat(form.elements[4].value), form.elements[5].value);
-
-  // append the new book to the existing array or initialize the array with the new book
-  var updatedBooks = [].concat(_toConsumableArray(storedBooks), [book]);
-
-  //   SETS UPDATED BOOKS ARRAY IN LOCALSTORAGE
-  localStorage.setItem("books", JSON.stringify(updatedBooks));
-  form.reset();
-}
-
-// FORM SUBMIT EVENT TRIGGER
-var form = document.getElementById("new-book-form");
-form.addEventListener("submit", addNewBook);
 },{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -184,7 +144,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49755" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51762" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
