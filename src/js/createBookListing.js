@@ -3,7 +3,6 @@ const booksContainer = document.querySelector(".books-container");
 let books = JSON.parse(localStorage.getItem("books"));
 
 function bookTemplate(book) {
-  //   console.log(book);
   return `
   <article id=book${book.id} class="single-book">
   <img src="./src/img/book-test.jpg" alt="" />

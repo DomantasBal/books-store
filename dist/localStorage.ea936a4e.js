@@ -120,17 +120,6 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 })({"src/js/localStorage.js":[function(require,module,exports) {
 var books = [];
 
-// REFERENCE FOR BOOK OBJECT
-// let book = {
-//   id: 1,
-//   name: "book name",
-//   author: "author",
-//   category: "category",
-//   year: "year",
-//   price: 32,
-//   artwork: "https://something.com",
-// };
-
 // CONSTRUCTOR FUNCTION TO POPULATE BOOK OBJECT WITH FORM DATA
 function Book(id, name, author, category, year, price, artwork) {
   this.id = id;
@@ -184,7 +173,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65196" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49755" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

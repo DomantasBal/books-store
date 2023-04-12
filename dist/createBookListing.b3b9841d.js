@@ -121,7 +121,6 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 var booksContainer = document.querySelector(".books-container");
 var books = JSON.parse(localStorage.getItem("books"));
 function bookTemplate(book) {
-  //   console.log(book);
   return "\n  <article id=book".concat(book.id, " class=\"single-book\">\n  <img src=\"./src/img/book-test.jpg\" alt=\"\" />\n  <div class=\"book-info\">\n    <h3 class=\"single-book__name\">").concat(book.name, "</h3>\n    <p class=\"single-book__author\">").concat(book.author, "</p>\n    <p class=\"single-book_category\">").concat(book.category, "</p>\n    <p class=\"single-book__years\">").concat(book.year, "</p>\n    <p class=\"single-book__price\">").concat(book.price, "\u20AC</p>\n  </div>\n  <div class=\"book-controls\">\n    <button class=\"btn edit\">Edit</button>\n    <button class=\"btn delete\">Delete</button>\n  </div>\n</article>\n    ");
 }
 books.forEach(function (book) {
@@ -153,7 +152,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65196" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49755" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

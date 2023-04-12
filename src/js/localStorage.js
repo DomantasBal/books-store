@@ -1,16 +1,5 @@
 let books = [];
 
-// REFERENCE FOR BOOK OBJECT
-// let book = {
-//   id: 1,
-//   name: "book name",
-//   author: "author",
-//   category: "category",
-//   year: "year",
-//   price: 32,
-//   artwork: "https://something.com",
-// };
-
 // CONSTRUCTOR FUNCTION TO POPULATE BOOK OBJECT WITH FORM DATA
 function Book(id, name, author, category, year, price, artwork) {
   this.id = id;
@@ -26,8 +15,11 @@ function Book(id, name, author, category, year, price, artwork) {
 function addNewBook(event) {
   event.preventDefault();
   const form = document.getElementById("new-book-form");
+
+  const storedBooks = JSON.parse(localStorage.getItem("books")) || [];
+
   const book = new Book(
-    books.length + 1,
+    storedBooks.length + 1,
     form.elements[0].value,
     form.elements[1].value,
     form.elements[2].value,
@@ -36,11 +28,11 @@ function addNewBook(event) {
     form.elements[5].value
   );
 
-  //   PUSHES NEW BOOK OBEJCT TO BOOKS ARRAY
-  books.push(book);
+  // APPEND THE NEW BOOK TO THE ARRAY AT LOCALSTORAGE
+  const updatedBooks = [...storedBooks, book];
 
-  //   SETS BOOK OBJECT IN LOCALSTORAGE ARRAY
-  localStorage.setItem("books", JSON.stringify(books));
+  //   SETS UPDATED BOOKS ARRAY IN LOCALSTORAGE
+  localStorage.setItem("books", JSON.stringify(updatedBooks));
   form.reset();
 }
 
