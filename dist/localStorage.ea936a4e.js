@@ -117,62 +117,49 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
-var bundleURL = null;
-function getBundleURLCached() {
-  if (!bundleURL) {
-    bundleURL = getBundleURL();
-  }
-  return bundleURL;
+})({"src/js/localStorage.js":[function(require,module,exports) {
+var books = [];
+
+// REFERENCE FOR BOOK OBJECT
+// let book = {
+//   id: 1,
+//   name: "book name",
+//   author: "author",
+//   category: "category",
+//   year: "year",
+//   price: 32,
+//   artwork: "https://something.com",
+// };
+
+// CONSTRUCTOR FUNCTION TO POPULATE BOOK OBJECT WITH FORM DATA
+function Book(id, name, author, category, year, price, artwork) {
+  this.id = id;
+  this.name = name;
+  this.author = author;
+  this.category = category;
+  this.year = year;
+  this.price = price;
+  this.artwork = artwork;
 }
-function getBundleURL() {
-  // Attempt to find the URL of the current script and use that as the base URL
-  try {
-    throw new Error();
-  } catch (err) {
-    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
-    if (matches) {
-      return getBaseURL(matches[0]);
-    }
-  }
-  return '/';
+
+// COLLECTS FORM DATA AND CREATES NEW OBJECT
+function addNewBook(event) {
+  event.preventDefault();
+  var form = document.getElementById("new-book-form");
+  var book = new Book(books.length + 1, form.elements[0].value, form.elements[1].value, form.elements[2].value, form.elements[3].value, parseFloat(form.elements[4].value), form.elements[5].value);
+
+  //   PUSHES NEW BOOK OBEJCT TO BOOKS ARRAY
+  books.push(book);
+
+  //   SETS BOOK OBJECT IN LOCALSTORAGE ARRAY
+  localStorage.setItem("books", JSON.stringify(books));
+  form.reset();
 }
-function getBaseURL(url) {
-  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)?\/[^/]+(?:\?.*)?$/, '$1') + '/';
-}
-exports.getBundleURL = getBundleURLCached;
-exports.getBaseURL = getBaseURL;
-},{}],"node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
-var bundle = require('./bundle-url');
-function updateLink(link) {
-  var newLink = link.cloneNode();
-  newLink.onload = function () {
-    link.remove();
-  };
-  newLink.href = link.href.split('?')[0] + '?' + Date.now();
-  link.parentNode.insertBefore(newLink, link.nextSibling);
-}
-var cssTimeout = null;
-function reloadCSS() {
-  if (cssTimeout) {
-    return;
-  }
-  cssTimeout = setTimeout(function () {
-    var links = document.querySelectorAll('link[rel="stylesheet"]');
-    for (var i = 0; i < links.length; i++) {
-      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
-        updateLink(links[i]);
-      }
-    }
-    cssTimeout = null;
-  }, 50);
-}
-module.exports = reloadCSS;
-},{"./bundle-url":"node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"src/sass/styles.scss":[function(require,module,exports) {
-var reloadCSS = require('_css_loader');
-module.hot.dispose(reloadCSS);
-module.hot.accept(reloadCSS);
-},{"_css_loader":"node_modules/parcel-bundler/src/builtins/css-loader.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+
+// FORM SUBMIT EVENT TRIGGER
+var form = document.getElementById("new-book-form");
+form.addEventListener("submit", addNewBook);
+},{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -341,5 +328,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js"], null)
-//# sourceMappingURL=/styles.9d9a6958.js.map
+},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js","src/js/localStorage.js"], null)
+//# sourceMappingURL=/localStorage.ea936a4e.js.map

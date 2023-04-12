@@ -11,20 +11,70 @@ header {
 }
 
 main {
-  text-align: center;
-  #books {
-    .books-container {
+  .btn {
+    padding: 5px 15px;
+  }
+  // NEW BOOK FORM SECTION
+  #new-book {
+    width: 400px;
+    margin: 30px;
+
+    #new-book-form {
+      background: rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      border-radius: 12px;
       display: flex;
       flex-direction: column;
+      gap: 10px;
+      width: 100%;
 
-      article {
-        width: 400px;
-        text-align: left;
-        border-radius: 12px;
+      input {
+        height: 40px;
+      }
+    }
+  }
+
+  //   BOOKS SECTION
+  #books {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+
+    h2 {
+      margin: 0px 0px 30px;
+    }
+
+    .books-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+
+      .single-book {
+        border-radius: 10px;
+        background: white;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        width: 300px;
+        height: auto;
+        overflow: hidden;
 
         img {
           width: 100%;
-          object-fit: cover;
+        }
+
+        p {
+          margin: 10px 0px;
+        }
+
+        .book-info {
+          margin: 10px;
+        }
+
+        .book-controls {
+          display: flex;
+          gap: 10px;
+          margin: 10px;
         }
       }
     }

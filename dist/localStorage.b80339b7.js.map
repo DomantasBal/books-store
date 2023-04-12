@@ -1,0 +1,1 @@
+{"version":3,"sources":["src/js/localStorage/localStorage.js"],"names":["x","_default","exports","default"],"mappings":";;;;;;AAAA,IAAIA,CAAC,GAAG,SAAS;AAAC,IAAAC,QAAA,GAEHD,CAAC;AAAAE,OAAA,CAAAC,OAAA,GAAAF,QAAA","file":"localStorage.b80339b7.js","sourceRoot":"..","sourcesContent":["let x = \"working\";\n\nexport default x;\n"]}

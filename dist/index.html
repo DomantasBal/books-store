@@ -7,6 +7,14 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="/styles.9d9a6958.css">
+
+    <!-- Javascript -->
+
+    <!-- INDEX JS -->
+    <script defer="" src="/localStorage.ea936a4e.js"></script>
+    <script defer="" src="/createBookListing.b3b9841d.js"></script>
+    <script defer="" src="/js.d818e0ef.js"></script>
+
     <title>Document</title>
   <script src="/styles.9d9a6958.js"></script></head>
   <body>
@@ -46,25 +54,40 @@
 
     <!-- Main -->
     <main>
+      <section id="new-book">
+        <form action="" id="new-book-form">
+          <input type="text" name="" id="" placeholder="Pavadinimas">
+          <input type="text" name="" id="" placeholder="Autorius">
+          <input type="text" name="" id="" placeholder="Kategorija">
+          <input type="text" name="" id="" placeholder="Metai">
+          <input type="text" name="" id="" placeholder="Kaina">
+          <input type="text" name="" id="" placeholder="Virselis (url)">
+          <button type="submit">Add new book</button>
+        </form>
+      </section>
       <section id="books">
         <div class="page-title">
           <h2>Knygų sąrašas</h2>
         </div>
 
+        <!-- BOOKS OUTPUT -->
         <div class="books-container">
+          <!-- SINGLE BOOK TEMPLATE -->
           <article class="single-book">
             <img src="/book-test.c3420833.jpg" alt="">
-
-            <h3 class="single-book__author">Autorius 1</h3>
-            <p class="single-book_category">Kategorija 1</p>
-            <p class="single-book__years">2023</p>
-            <p class="single-book__price">32€</p>
-
+            <div class="book-info">
+              <h3 class="single-book__name">Pavadinimas 1</h3>
+              <p class="single-book__author">Autorius 1</p>
+              <p class="single-book_category">Kategorija 1</p>
+              <p class="single-book__years">2023</p>
+              <p class="single-book__price">32€</p>
+            </div>
             <div class="book-controls">
-              <button class="edit">Edit</button>
-              <button class="delete">Delete</button>
+              <button class="btn edit">Edit</button>
+              <button class="btn delete">Delete</button>
             </div>
           </article>
+          <!-- SINGLE BOOK TEMPLATE END -->
         </div>
       </section>
     </main>
