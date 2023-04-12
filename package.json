@@ -1,0 +1,15 @@
+{
+  "name": "books-store",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/DomantasBal/books-store.git",
+  "author": "Domantas <92823413+DomantasBal@users.noreply.github.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "parcel-bundler": "^1.12.5"
+  },
+  "scripts": {
+    "dev":"parcel index.html",
+    "build": "parcel build index.html"
+  }
+}
