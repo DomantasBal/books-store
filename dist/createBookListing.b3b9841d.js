@@ -118,15 +118,17 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 
   return newRequire;
 })({"src/js/createBookListing.js":[function(require,module,exports) {
-var booksContainer = document.querySelector(".books-container");
-var books = JSON.parse(localStorage.getItem("books"));
 function bookTemplate(book) {
-  return "\n  <article id=book".concat(book.id, " class=\"single-book\">\n  <img src=\"./src/img/book-test.jpg\" alt=\"\" />\n  <div class=\"book-info\">\n    <h3 class=\"single-book__name\">").concat(book.name, "</h3>\n    <p class=\"single-book__author\">").concat(book.author, "</p>\n    <p class=\"single-book_category\">").concat(book.category, "</p>\n    <p class=\"single-book__years\">").concat(book.year, "</p>\n    <p class=\"single-book__price\">").concat(book.price, "\u20AC</p>\n  </div>\n  <div class=\"book-controls\">\n    <button class=\"btn edit\">Edit</button>\n    <button class=\"btn delete\">Delete</button>\n  </div>\n</article>\n    ");
+  return "\n  <article id=book".concat(book.id, " class=\"single-book\">\n  <img src=\"./src/img/book-test.jpg\" alt=\"\" />\n  <div class=\"book-info\">\n    <h3 class=\"single-book__name\">").concat(book.name, "</h3>\n    <p class=\"single-book__author\">").concat(book.author, "</p>\n    <p class=\"single-book_category\">").concat(book.category, "</p>\n    <p class=\"single-book__years\">").concat(book.year, "</p>\n    <p class=\"single-book__price\">").concat(book.price, "\u20AC</p>\n  </div>\n  <div class=\"book-controls\">\n    <button class=\"btn edit\" onclick=\"editBook(this)\">Edit</button>\n    <button class=\"btn delete\">Delete</button>\n  </div>\n</article>\n    ");
 }
-books.forEach(function (book) {
-  console.log(bookTemplate(book));
-  booksContainer.innerHTML += bookTemplate(book);
-});
+function showBooks() {
+  var books = JSON.parse(localStorage.getItem("books"));
+  var booksContainer = document.querySelector(".books-container");
+  books.forEach(function (book) {
+    booksContainer.innerHTML += bookTemplate(book);
+  });
+}
+window.onload = showBooks;
 },{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -152,7 +154,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51762" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53366" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

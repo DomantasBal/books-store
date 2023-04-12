@@ -1,7 +1,3 @@
-const booksContainer = document.querySelector(".books-container");
-
-let books = JSON.parse(localStorage.getItem("books"));
-
 function bookTemplate(book) {
   return `
   <article id=book${book.id} class="single-book">
@@ -14,14 +10,19 @@ function bookTemplate(book) {
     <p class="single-book__price">${book.price}€</p>
   </div>
   <div class="book-controls">
-    <button class="btn edit">Edit</button>
+    <button class="btn edit" onclick="editBook(this)">Edit</button>
     <button class="btn delete">Delete</button>
   </div>
 </article>
     `;
 }
 
-books.forEach((book) => {
-  console.log(bookTemplate(book));
-  booksContainer.innerHTML += bookTemplate(book);
-});
+function showBooks() {
+  let books = JSON.parse(localStorage.getItem("books"));
+  const booksContainer = document.querySelector(".books-container");
+  books.forEach((book) => {
+    booksContainer.innerHTML += bookTemplate(book);
+  });
+}
+
+window.onload = showBooks;

@@ -117,44 +117,11 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"src/js/localStorage.js":[function(require,module,exports) {
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-var books = [];
-
-// CONSTRUCTOR FUNCTION TO POPULATE BOOK OBJECT WITH FORM DATA
-function Book(id, name, author, category, year, price, artwork) {
-  this.id = id;
-  this.name = name;
-  this.author = author;
-  this.category = category;
-  this.year = year;
-  this.price = price;
-  this.artwork = artwork;
+})({"src/js/bookEdit.js":[function(require,module,exports) {
+function editBook(selectedItem) {
+  console.log(selectedItem);
 }
-
-// COLLECTS FORM DATA AND CREATES NEW OBJECT
-function addNewBook(event) {
-  event.preventDefault();
-  var form = document.getElementById("new-book-form");
-  var storedBooks = JSON.parse(localStorage.getItem("books")) || [];
-  var book = new Book(storedBooks.length + 1, form.elements[0].value, form.elements[1].value, form.elements[2].value, form.elements[3].value, parseFloat(form.elements[4].value), form.elements[5].value);
-
-  // APPEND THE NEW BOOK TO THE ARRAY AT LOCALSTORAGE
-  var updatedBooks = [].concat(_toConsumableArray(storedBooks), [book]);
-
-  //   SETS UPDATED BOOKS ARRAY IN LOCALSTORAGE
-  localStorage.setItem("books", JSON.stringify(updatedBooks));
-  form.reset();
-}
-
-// FORM SUBMIT EVENT TRIGGER
-var form = document.getElementById("new-book-form");
-form.addEventListener("submit", addNewBook);
+console.log("ksjadflkadjflkj");
 },{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -324,5 +291,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js","src/js/localStorage.js"], null)
-//# sourceMappingURL=/localStorage.ea936a4e.js.map
+},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js","src/js/bookEdit.js"], null)
+//# sourceMappingURL=/bookEdit.7acc9cc2.js.map
