@@ -1,0 +1,30 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+main {
+  text-align: center;
+}
+main #books .books-container {
+  display: flex;
+  flex-direction: column;
+}
+main #books .books-container article {
+  width: 400px;
+  text-align: left;
+  border-radius: 12px;
+}
+main #books .books-container article img {
+  width: 100%;
+  object-fit: cover;
+}
+
+/*# sourceMappingURL=/styles.9d9a6958.css.map */

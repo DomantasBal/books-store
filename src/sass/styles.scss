@@ -3,3 +3,30 @@
   margin: 0;
   padding: 0;
 }
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+main {
+  text-align: center;
+  #books {
+    .books-container {
+      display: flex;
+      flex-direction: column;
+
+      article {
+        width: 400px;
+        text-align: left;
+        border-radius: 12px;
+
+        img {
+          width: 100%;
+          object-fit: cover;
+        }
+      }
+    }
+  }
+}

@@ -4,9 +4,69 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="./src/sass/styles.scss" />
     <title>Document</title>
   </head>
   <body>
-    Hello
+    <!-- Header -->
+    <header>
+      <div class="logo"><h1>Mano Knygos</h1></div>
+      <div class="add-book"><button id="add-book">Pridėti knygą</button></div>
+      <div class="search-bar">
+        <form action="" id="search-form">
+          <input type="text" id="search-input" placeholder="Ieškoti" />
+          <button type="submit">Ieškoti</button>
+        </form>
+      </div>
+      <div class="author-filter">
+        <select name="" id="authors-select">
+          <option value="1">Author 1</option>
+          <option value="1">Author 2</option>
+          <option value="1">Author 3</option>
+          <option value="1">Author 4</option>
+        </select>
+      </div>
+      <div class="category-filter">
+        <select name="" id="category-select">
+          <option value="">Front-end</option>
+          <option value="">Back-end</option>
+          <option value="">UI / UX</option>
+          <option value="">Other</option>
+        </select>
+      </div>
+      <div class="price-sort">
+        <select name="" id="price-select">
+          <option value="">Min - Max</option>
+          <option value="">Max - Min</option>
+        </select>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main>
+      <section id="books">
+        <div class="page-title">
+          <h2>Knygų sąrašas</h2>
+        </div>
+
+        <div class="books-container">
+          <article class="single-book">
+            <img src="./src/img/book-test.jpg" alt="" />
+
+            <h3 class="single-book__author">Autorius 1</h3>
+            <p class="single-book_category">Kategorija 1</p>
+            <p class="single-book__years">2023</p>
+            <p class="single-book__price">32€</p>
+
+            <div class="book-controls">
+              <button class="edit">Edit</button>
+              <button class="delete">Delete</button>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
   </body>
 </html>
