@@ -191,7 +191,32 @@ window.onload = showBooks;
 // ==================== editBook.js ==================== //
 
 function editBook(bookId) {
-  console.log(bookId);
+  // Gets all books array of objects from localstorage
+  var books = JSON.parse(localStorage.getItem("books"));
+  // finds certain book object that matches the clicked book item by ID (parses to int if id is set with letters)
+  var bookToEdit = books.find(function (book) {
+    return book.id === parseInt(bookId);
+  });
+
+  // Setting book new values
+  bookToEdit.artwork = "test";
+  bookToEdit.name = "test";
+  bookToEdit.author = "test";
+  bookToEdit.category = "test";
+  bookToEdit.year = "test";
+  bookToEdit.price = "test";
+  console.log(bookToEdit);
+
+  // Finds the index of the book to edit in the books array
+  var bookIndex = books.findIndex(function (book) {
+    return book.id === parseInt(bookId);
+  });
+
+  // Update the book in the original books array
+  books[bookIndex] = bookToEdit;
+
+  // Save the updated books array back to localStorage
+  localStorage.setItem("books", JSON.stringify(books));
 }
 },{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -218,7 +243,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57987" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62551" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

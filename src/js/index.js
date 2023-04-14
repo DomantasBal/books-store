@@ -93,5 +93,27 @@ window.onload = showBooks;
 // ==================== editBook.js ==================== //
 
 function editBook(bookId) {
-  console.log(bookId);
+  // Gets all books array of objects from localstorage
+  let books = JSON.parse(localStorage.getItem("books"));
+  // finds certain book object that matches the clicked book item by ID (parses to int if id is set with letters)
+  const bookToEdit = books.find((book) => book.id === parseInt(bookId));
+
+  // Setting book new values
+  bookToEdit.artwork = "test";
+  bookToEdit.name = "test";
+  bookToEdit.author = "test";
+  bookToEdit.category = "test";
+  bookToEdit.year = "test";
+  bookToEdit.price = "test";
+
+  console.log(bookToEdit);
+
+  // Finds the index of the book to edit in the books array
+  const bookIndex = books.findIndex((book) => book.id === parseInt(bookId));
+
+  // Update the book in the original books array
+  books[bookIndex] = bookToEdit;
+
+  // Save the updated books array back to localStorage
+  localStorage.setItem("books", JSON.stringify(books));
 }
