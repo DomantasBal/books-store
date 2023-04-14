@@ -162,10 +162,9 @@ function addNewBook(event) {
 var form = document.getElementById("new-book-form");
 form.addEventListener("submit", addNewBook);
 function bookTemplate(book) {
-  return "\n    <article id=".concat(book.id, " class=\"single-book\">\n    <img src=\"./src/img/book-test.jpg\" alt=\"\" />\n    <div class=\"book-info\">\n      <h3 class=\"single-book__name editable\">").concat(book.name, "</h3>\n      <p class=\"single-book__author editable\">").concat(book.author, "</p>\n      <p class=\"single-book_category editable\">").concat(book.category, "</p>\n      <p class=\"single-book__years editable\">").concat(book.year, "</p>\n      <p class=\"single-book__price editable\">").concat(book.price, "\u20AC</p>\n    </div>\n    <div class=\"book-controls\">\n      <button class=\"btn edit\" data-book-id=\"").concat(book.id, "\">Edit</button>\n      <button class=\"btn save\" data-book-id=\"").concat(book.id, "\" style=\"display:none\">Save</button>\n      <button class=\"btn delete\">Delete</button>\n    </div>\n  </article>\n      ");
+  return "\n    <article id=".concat(book.id, " class=\"single-book\">\n    <img src=\"./src/img/book-test.jpg\" alt=\"\" />\n    <div class=\"book-info\">\n      <h3 class=\"single-book__name editable\">").concat(book.name, "</h3>\n      <p class=\"single-book__author editable\">").concat(book.author, "</p>\n      <p class=\"single-book_category editable\">").concat(book.category, "</p>\n      <p class=\"single-book__years editable\">").concat(book.year, "</p>\n      <p class=\"single-book__price editable\">").concat(book.price, "\u20AC</p>\n    </div>\n    <div class=\"book-controls\">\n      <button class=\"btn edit\" data-book-id=\"").concat(book.id, "\">Edit</button>\n      <button class=\"btn save\" data-book-id=\"").concat(book.id, "\" style=\"display:none\">Save</button>\n      <button class=\"btn delete\" data-book-id=\"").concat(book.id, "\">Delete</button>\n    </div>\n  </article>\n      ");
 }
 function showBooks() {
-  console.log("show");
   var books = JSON.parse(localStorage.getItem("books"));
   var booksContainer = document.querySelector(".books-container");
   if (!Array.isArray(books)) {
@@ -177,18 +176,21 @@ function showBooks() {
     booksContainer.innerHTML += bookTemplate(book);
   });
 
-  // Selects all Edit buttons
+  // EDIT BTN FUNC
   var editButtons = document.querySelectorAll(".btn.edit");
-
-  // Iterates through each Edit button
   editButtons.forEach(function (button) {
-    // Attaches a click event listener to each button
     button.addEventListener("click", function () {
-      // Retrieves the bookId from the data-book-id attribute
       var bookId = button.getAttribute("data-book-id");
-
-      // Calls the editBook function with the retrieved bookId
       editBook(bookId);
+    });
+  });
+
+  // DELETE BTN FUNC
+  var deleteButtons = document.querySelectorAll(".btn.delete");
+  deleteButtons.forEach(function (button) {
+    button.addEventListener("click", function () {
+      var bookId = button.getAttribute("data-book-id");
+      deleteBook(bookId);
     });
   });
 }
@@ -251,7 +253,6 @@ function saveEditedBook(bookElement, bookId) {
 
   // Retrieve storedBooks from localStorage
   var storedBooks = JSON.parse(localStorage.getItem("books"));
-
   // Find the index of the book to update
   var bookIndex = storedBooks.findIndex(function (book) {
     return book.id === bookId;
@@ -281,6 +282,23 @@ function editBook(bookId) {
     saveButton.style.display = "none";
   });
 }
+
+// ==================== deleteBook.js ==================== //
+function deleteBook(bookId) {
+  var storedBooks = JSON.parse(localStorage.getItem("books"));
+  var idNumber = Number(bookId);
+
+  // Find the index of the book to delete
+  var bookIndex = storedBooks.findIndex(function (book) {
+    return book.id === idNumber;
+  });
+  if (bookIndex !== -1) {
+    storedBooks.splice(bookIndex, 1);
+    localStorage.setItem("books", JSON.stringify(storedBooks));
+  } else {
+    alert("book was not found in database.");
+  }
+}
 },{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -306,7 +324,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55258" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61275" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

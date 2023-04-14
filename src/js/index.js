@@ -60,14 +60,13 @@ function bookTemplate(book) {
     <div class="book-controls">
       <button class="btn edit" data-book-id="${book.id}">Edit</button>
       <button class="btn save" data-book-id="${book.id}" style="display:none">Save</button>
-      <button class="btn delete">Delete</button>
+      <button class="btn delete" data-book-id="${book.id}">Delete</button>
     </div>
   </article>
       `;
 }
 
 function showBooks() {
-  console.log("show");
   let books = JSON.parse(localStorage.getItem("books"));
   const booksContainer = document.querySelector(".books-container");
 
@@ -80,18 +79,22 @@ function showBooks() {
     booksContainer.innerHTML += bookTemplate(book);
   });
 
-  // Selects all Edit buttons
+  // EDIT BTN FUNC
   const editButtons = document.querySelectorAll(".btn.edit");
-
-  // Iterates through each Edit button
   editButtons.forEach((button) => {
-    // Attaches a click event listener to each button
     button.addEventListener("click", () => {
-      // Retrieves the bookId from the data-book-id attribute
+      const bookId = button.getAttribute("data-book-id");
+      editBook(bookId);
+    });
+  });
+
+  // DELETE BTN FUNC
+  const deleteButtons = document.querySelectorAll(".btn.delete");
+  deleteButtons.forEach((button) => {
+    button.addEventListener("click", () => {
       const bookId = button.getAttribute("data-book-id");
 
-      // Calls the editBook function with the retrieved bookId
-      editBook(bookId);
+      deleteBook(bookId);
     });
   });
 }
@@ -150,7 +153,6 @@ function saveEditedBook(bookElement, bookId) {
 
   // Retrieve storedBooks from localStorage
   const storedBooks = JSON.parse(localStorage.getItem("books"));
-
   // Find the index of the book to update
   const bookIndex = storedBooks.findIndex((book) => book.id === bookId);
 
@@ -182,4 +184,20 @@ function editBook(bookId) {
     editButton.textContent = "Edit";
     saveButton.style.display = "none";
   });
+}
+
+// ==================== deleteBook.js ==================== //
+function deleteBook(bookId) {
+  const storedBooks = JSON.parse(localStorage.getItem("books"));
+  const idNumber = Number(bookId);
+
+  // Find the index of the book to delete
+  const bookIndex = storedBooks.findIndex((book) => book.id === idNumber);
+
+  if (bookIndex !== -1) {
+    storedBooks.splice(bookIndex, 1);
+    localStorage.setItem("books", JSON.stringify(storedBooks));
+  } else {
+    alert("book was not found in database.");
+  }
 }
