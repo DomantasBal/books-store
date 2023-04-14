@@ -160,13 +160,30 @@ function addNewBook(event) {
 var form = document.getElementById("new-book-form");
 form.addEventListener("submit", addNewBook);
 function bookTemplate(book) {
-  return "\n    <article id=".concat(book.id, " class=\"single-book\">\n    <img src=\"./src/img/book-test.jpg\" alt=\"\" />\n    <div class=\"book-info\">\n      <h3 class=\"single-book__name\">").concat(book.name, "</h3>\n      <p class=\"single-book__author\">").concat(book.author, "</p>\n      <p class=\"single-book_category\">").concat(book.category, "</p>\n      <p class=\"single-book__years\">").concat(book.year, "</p>\n      <p class=\"single-book__price\">").concat(book.price, "\u20AC</p>\n    </div>\n    <div class=\"book-controls\">\n      <button class=\"btn edit\" onclick=\"editBook(").concat(book.id, ")\">Edit</button>\n      <button class=\"btn delete\">Delete</button>\n    </div>\n  </article>\n      ");
+  return "\n    <article id=".concat(book.id, " class=\"single-book\">\n    <img src=\"./src/img/book-test.jpg\" alt=\"\" />\n    <div class=\"book-info\">\n      <h3 class=\"single-book__name\">").concat(book.name, "</h3>\n      <p class=\"single-book__author\">").concat(book.author, "</p>\n      <p class=\"single-book_category\">").concat(book.category, "</p>\n      <p class=\"single-book__years\">").concat(book.year, "</p>\n      <p class=\"single-book__price\">").concat(book.price, "\u20AC</p>\n    </div>\n    <div class=\"book-controls\">\n      <button class=\"btn edit\" data-book-id=\"").concat(book.id, "\">Edit</button>\n      <button class=\"btn delete\">Delete</button>\n    </div>\n  </article>\n      ");
 }
 function showBooks() {
   var books = JSON.parse(localStorage.getItem("books"));
   var booksContainer = document.querySelector(".books-container");
+
+  //  Populates booksContainer with book templates
   books.forEach(function (book) {
     booksContainer.innerHTML += bookTemplate(book);
+  });
+
+  // Selects all Edit buttons
+  var editButtons = document.querySelectorAll(".btn.edit");
+
+  // Iterates through each Edit button
+  editButtons.forEach(function (button) {
+    // Attaches a click event listener to each button
+    button.addEventListener("click", function () {
+      // Retrieves the bookId from the data-book-id attribute
+      var bookId = button.getAttribute("data-book-id");
+
+      // Calls the editBook function with the retrieved bookId
+      editBook(bookId);
+    });
   });
 }
 window.onload = showBooks;
@@ -201,7 +218,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57145" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57987" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
