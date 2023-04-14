@@ -1,6 +1,6 @@
 // ==================== localstorage.js ==================== //
 
-let books = [];
+let savedBooks = [];
 
 // CONSTRUCTOR FUNCTION TO POPULATE BOOK OBJECT WITH FORM DATA
 function Book(id, name, author, category, year, price, artwork) {
@@ -20,6 +20,8 @@ function addNewBook(event) {
 
   const storedBooks = JSON.parse(localStorage.getItem("books")) || [];
 
+  const booksArray = Array.isArray(storedBooks) ? storedBooks : [];
+
   const book = new Book(
     storedBooks.length + 1,
     form.elements[0].value,
@@ -31,7 +33,7 @@ function addNewBook(event) {
   );
 
   // APPEND THE NEW BOOK TO THE ARRAY AT LOCALSTORAGE
-  const updatedBooks = [...storedBooks, book];
+  const updatedBooks = [...booksArray, book];
 
   //   SETS UPDATED BOOKS ARRAY IN LOCALSTORAGE
   localStorage.setItem("books", JSON.stringify(updatedBooks));
@@ -49,14 +51,15 @@ function bookTemplate(book) {
     <article id=${book.id} class="single-book">
     <img src="./src/img/book-test.jpg" alt="" />
     <div class="book-info">
-      <h3 class="single-book__name">${book.name}</h3>
-      <p class="single-book__author">${book.author}</p>
-      <p class="single-book_category">${book.category}</p>
-      <p class="single-book__years">${book.year}</p>
-      <p class="single-book__price">${book.price}€</p>
+      <h3 class="single-book__name editable">${book.name}</h3>
+      <p class="single-book__author editable">${book.author}</p>
+      <p class="single-book_category editable">${book.category}</p>
+      <p class="single-book__years editable">${book.year}</p>
+      <p class="single-book__price editable">${book.price}€</p>
     </div>
     <div class="book-controls">
       <button class="btn edit" data-book-id="${book.id}">Edit</button>
+      <button class="btn save" data-book-id="${book.id}" style="display:none">Save</button>
       <button class="btn delete">Delete</button>
     </div>
   </article>
@@ -64,8 +67,13 @@ function bookTemplate(book) {
 }
 
 function showBooks() {
+  console.log("show");
   let books = JSON.parse(localStorage.getItem("books"));
   const booksContainer = document.querySelector(".books-container");
+
+  if (!Array.isArray(books)) {
+    books = [];
+  }
 
   //  Populates booksContainer with book templates
   books.forEach((book) => {
@@ -88,32 +96,61 @@ function showBooks() {
   });
 }
 
-window.onload = showBooks;
+window.addEventListener("load", showBooks);
 
 // ==================== editBook.js ==================== //
 
+function makeFieldsEditable(bookElement, isEditable) {
+  bookElement.querySelectorAll(".editable").forEach((field) => {
+    field.contentEditable = isEditable;
+  });
+}
+
+function saveEditedBook(bookElement, bookId) {
+  let updatedBook = {
+    id: bookId,
+    name: bookElement.querySelector(".single-book__name").innerText,
+    author: bookElement.querySelector(".single-book__author").innerText,
+    category: bookElement.querySelector(".single-book_category").innerText,
+    year: bookElement.querySelector(".single-book__years").innerText,
+    price: parseFloat(
+      bookElement.querySelector(".single-book__price").innerText.slice(0, -1)
+    ),
+    artwork: "",
+  };
+
+  // Retrieve storedBooks from localStorage
+  const storedBooks = JSON.parse(localStorage.getItem("books"));
+
+  // Find the index of the book to update
+  const bookIndex = storedBooks.findIndex((book) => book.id === bookId);
+
+  // Update the book in the storedBooks array
+  storedBooks[bookIndex] = updatedBook;
+
+  localStorage.setItem("books", JSON.stringify(storedBooks));
+  makeFieldsEditable(bookElement, false);
+}
+
 function editBook(bookId) {
-  // Gets all books array of objects from localstorage
-  let books = JSON.parse(localStorage.getItem("books"));
-  // finds certain book object that matches the clicked book item by ID (parses to int if id is set with letters)
-  const bookToEdit = books.find((book) => book.id === parseInt(bookId));
+  const bookElement = document.getElementById(bookId);
 
-  // Setting book new values
-  bookToEdit.artwork = "test";
-  bookToEdit.name = "test";
-  bookToEdit.author = "test";
-  bookToEdit.category = "test";
-  bookToEdit.year = "test";
-  bookToEdit.price = "test";
+  const saveButton = bookElement.querySelector(".btn.save");
+  const editButton = bookElement.querySelector(".btn.edit");
 
-  console.log(bookToEdit);
+  if (editButton.textContent === "Edit") {
+    makeFieldsEditable(bookElement, true);
+    editButton.textContent = "Cancel";
+    saveButton.style.display = "inline-block";
+  } else {
+    makeFieldsEditable(bookElement, false);
+    editButton.textContent = "Edit";
+    saveButton.style.display = "none";
+  }
 
-  // Finds the index of the book to edit in the books array
-  const bookIndex = books.findIndex((book) => book.id === parseInt(bookId));
-
-  // Update the book in the original books array
-  books[bookIndex] = bookToEdit;
-
-  // Save the updated books array back to localStorage
-  localStorage.setItem("books", JSON.stringify(books));
+  saveButton.addEventListener("click", () => {
+    saveEditedBook(bookElement, parseInt(bookId));
+    editButton.textContent = "Edit";
+    saveButton.style.display = "none";
+  });
 }

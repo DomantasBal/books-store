@@ -126,7 +126,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToAr
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 // ==================== localstorage.js ==================== //
 
-var books = [];
+var savedBooks = [];
 
 // CONSTRUCTOR FUNCTION TO POPULATE BOOK OBJECT WITH FORM DATA
 function Book(id, name, author, category, year, price, artwork) {
@@ -144,10 +144,11 @@ function addNewBook(event) {
   event.preventDefault();
   var form = document.getElementById("new-book-form");
   var storedBooks = JSON.parse(localStorage.getItem("books")) || [];
+  var booksArray = Array.isArray(storedBooks) ? storedBooks : [];
   var book = new Book(storedBooks.length + 1, form.elements[0].value, form.elements[1].value, form.elements[2].value, form.elements[3].value, parseFloat(form.elements[4].value), form.elements[5].value);
 
   // APPEND THE NEW BOOK TO THE ARRAY AT LOCALSTORAGE
-  var updatedBooks = [].concat(_toConsumableArray(storedBooks), [book]);
+  var updatedBooks = [].concat(_toConsumableArray(booksArray), [book]);
 
   //   SETS UPDATED BOOKS ARRAY IN LOCALSTORAGE
   localStorage.setItem("books", JSON.stringify(updatedBooks));
@@ -160,11 +161,15 @@ function addNewBook(event) {
 var form = document.getElementById("new-book-form");
 form.addEventListener("submit", addNewBook);
 function bookTemplate(book) {
-  return "\n    <article id=".concat(book.id, " class=\"single-book\">\n    <img src=\"./src/img/book-test.jpg\" alt=\"\" />\n    <div class=\"book-info\">\n      <h3 class=\"single-book__name\">").concat(book.name, "</h3>\n      <p class=\"single-book__author\">").concat(book.author, "</p>\n      <p class=\"single-book_category\">").concat(book.category, "</p>\n      <p class=\"single-book__years\">").concat(book.year, "</p>\n      <p class=\"single-book__price\">").concat(book.price, "\u20AC</p>\n    </div>\n    <div class=\"book-controls\">\n      <button class=\"btn edit\" data-book-id=\"").concat(book.id, "\">Edit</button>\n      <button class=\"btn delete\">Delete</button>\n    </div>\n  </article>\n      ");
+  return "\n    <article id=".concat(book.id, " class=\"single-book\">\n    <img src=\"./src/img/book-test.jpg\" alt=\"\" />\n    <div class=\"book-info\">\n      <h3 class=\"single-book__name editable\">").concat(book.name, "</h3>\n      <p class=\"single-book__author editable\">").concat(book.author, "</p>\n      <p class=\"single-book_category editable\">").concat(book.category, "</p>\n      <p class=\"single-book__years editable\">").concat(book.year, "</p>\n      <p class=\"single-book__price editable\">").concat(book.price, "\u20AC</p>\n    </div>\n    <div class=\"book-controls\">\n      <button class=\"btn edit\" data-book-id=\"").concat(book.id, "\">Edit</button>\n      <button class=\"btn save\" data-book-id=\"").concat(book.id, "\" style=\"display:none\">Save</button>\n      <button class=\"btn delete\">Delete</button>\n    </div>\n  </article>\n      ");
 }
 function showBooks() {
+  console.log("show");
   var books = JSON.parse(localStorage.getItem("books"));
   var booksContainer = document.querySelector(".books-container");
+  if (!Array.isArray(books)) {
+    books = [];
+  }
 
   //  Populates booksContainer with book templates
   books.forEach(function (book) {
@@ -186,37 +191,57 @@ function showBooks() {
     });
   });
 }
-window.onload = showBooks;
+window.addEventListener("load", showBooks);
 
 // ==================== editBook.js ==================== //
 
+function makeFieldsEditable(bookElement, isEditable) {
+  bookElement.querySelectorAll(".editable").forEach(function (field) {
+    field.contentEditable = isEditable;
+  });
+}
+function saveEditedBook(bookElement, bookId) {
+  var updatedBook = {
+    id: bookId,
+    name: bookElement.querySelector(".single-book__name").innerText,
+    author: bookElement.querySelector(".single-book__author").innerText,
+    category: bookElement.querySelector(".single-book_category").innerText,
+    year: bookElement.querySelector(".single-book__years").innerText,
+    price: parseFloat(bookElement.querySelector(".single-book__price").innerText.slice(0, -1)),
+    artwork: ""
+  };
+
+  // Retrieve storedBooks from localStorage
+  var storedBooks = JSON.parse(localStorage.getItem("books"));
+
+  // Find the index of the book to update
+  var bookIndex = storedBooks.findIndex(function (book) {
+    return book.id === bookId;
+  });
+
+  // Update the book in the storedBooks array
+  storedBooks[bookIndex] = updatedBook;
+  localStorage.setItem("books", JSON.stringify(storedBooks));
+  makeFieldsEditable(bookElement, false);
+}
 function editBook(bookId) {
-  // Gets all books array of objects from localstorage
-  var books = JSON.parse(localStorage.getItem("books"));
-  // finds certain book object that matches the clicked book item by ID (parses to int if id is set with letters)
-  var bookToEdit = books.find(function (book) {
-    return book.id === parseInt(bookId);
+  var bookElement = document.getElementById(bookId);
+  var saveButton = bookElement.querySelector(".btn.save");
+  var editButton = bookElement.querySelector(".btn.edit");
+  if (editButton.textContent === "Edit") {
+    makeFieldsEditable(bookElement, true);
+    editButton.textContent = "Cancel";
+    saveButton.style.display = "inline-block";
+  } else {
+    makeFieldsEditable(bookElement, false);
+    editButton.textContent = "Edit";
+    saveButton.style.display = "none";
+  }
+  saveButton.addEventListener("click", function () {
+    saveEditedBook(bookElement, parseInt(bookId));
+    editButton.textContent = "Edit";
+    saveButton.style.display = "none";
   });
-
-  // Setting book new values
-  bookToEdit.artwork = "test";
-  bookToEdit.name = "test";
-  bookToEdit.author = "test";
-  bookToEdit.category = "test";
-  bookToEdit.year = "test";
-  bookToEdit.price = "test";
-  console.log(bookToEdit);
-
-  // Finds the index of the book to edit in the books array
-  var bookIndex = books.findIndex(function (book) {
-    return book.id === parseInt(bookId);
-  });
-
-  // Update the book in the original books array
-  books[bookIndex] = bookToEdit;
-
-  // Save the updated books array back to localStorage
-  localStorage.setItem("books", JSON.stringify(books));
 }
 },{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -243,7 +268,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62551" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52883" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
