@@ -154,6 +154,7 @@ function addNewBook(event) {
   //   SETS UPDATED BOOKS ARRAY IN LOCALSTORAGE
   localStorage.setItem("books", JSON.stringify(updatedBooks));
   form.reset();
+  location.reload();
 }
 
 // ==================== createBookListing.js ==================== //
@@ -298,7 +299,34 @@ function deleteBook(bookId) {
   } else {
     alert("book was not found in database.");
   }
+  location.reload();
 }
+
+// ==================== filters.js ==================== //
+
+// AUTHOR FILTER
+var selectAuthor = document.getElementById("authors-select");
+selectAuthor.addEventListener("change", function () {
+  var selectedValue = selectAuthor.value;
+  var data = JSON.parse(localStorage.getItem("books"));
+  var filteredData = data.filter(function (item) {
+    return item.author === selectedValue;
+  });
+  console.log(filteredData);
+});
+
+// CATEGORY FILTER
+var selectCategory = document.getElementById("category-select");
+selectCategory.addEventListener("change", function () {
+  var selectedValue = selectCategory.value;
+  var data = JSON.parse(localStorage.getItem("books"));
+  var filteredData = data.filter(function (item) {
+    return item.author === selectedValue;
+  });
+  console.log(filteredData);
+});
+
+// TODO: Write values in the authors select options or link them dynamically with typed media somehow
 },{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -324,7 +352,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61275" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50068" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

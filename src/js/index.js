@@ -38,6 +38,7 @@ function addNewBook(event) {
   //   SETS UPDATED BOOKS ARRAY IN LOCALSTORAGE
   localStorage.setItem("books", JSON.stringify(updatedBooks));
   form.reset();
+  location.reload();
 }
 
 // ==================== createBookListing.js ==================== //
@@ -200,4 +201,28 @@ function deleteBook(bookId) {
   } else {
     alert("book was not found in database.");
   }
+
+  location.reload();
 }
+
+// ==================== filters.js ==================== //
+
+// AUTHOR FILTER
+const selectAuthor = document.getElementById("authors-select");
+selectAuthor.addEventListener("change", () => {
+  const selectedValue = selectAuthor.value;
+  const data = JSON.parse(localStorage.getItem("books"));
+  const filteredData = data.filter((item) => item.author === selectedValue);
+  console.log(filteredData);
+});
+
+// CATEGORY FILTER
+const selectCategory = document.getElementById("category-select");
+selectCategory.addEventListener("change", () => {
+  const selectedValue = selectCategory.value;
+  const data = JSON.parse(localStorage.getItem("books"));
+  const filteredData = data.filter((item) => item.author === selectedValue);
+  console.log(filteredData);
+});
+
+// TODO: Write values in the authors select options or link them dynamically with typed inputs somehow
