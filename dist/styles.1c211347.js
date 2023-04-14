@@ -117,66 +117,62 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"src/js/index.js":[function(require,module,exports) {
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-// ==================== localstorage.js ==================== //
-
-var books = [];
-
-// CONSTRUCTOR FUNCTION TO POPULATE BOOK OBJECT WITH FORM DATA
-function Book(id, name, author, category, year, price, artwork) {
-  this.id = id;
-  this.name = name;
-  this.author = author;
-  this.category = category;
-  this.year = year;
-  this.price = price;
-  this.artwork = artwork;
+})({"node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+var bundleURL = null;
+function getBundleURLCached() {
+  if (!bundleURL) {
+    bundleURL = getBundleURL();
+  }
+  return bundleURL;
 }
-
-// COLLECTS FORM DATA AND CREATES NEW OBJECT
-function addNewBook(event) {
-  event.preventDefault();
-  var form = document.getElementById("new-book-form");
-  var storedBooks = JSON.parse(localStorage.getItem("books")) || [];
-  var book = new Book(storedBooks.length + 1, form.elements[0].value, form.elements[1].value, form.elements[2].value, form.elements[3].value, parseFloat(form.elements[4].value), form.elements[5].value);
-
-  // APPEND THE NEW BOOK TO THE ARRAY AT LOCALSTORAGE
-  var updatedBooks = [].concat(_toConsumableArray(storedBooks), [book]);
-
-  //   SETS UPDATED BOOKS ARRAY IN LOCALSTORAGE
-  localStorage.setItem("books", JSON.stringify(updatedBooks));
-  form.reset();
+function getBundleURL() {
+  // Attempt to find the URL of the current script and use that as the base URL
+  try {
+    throw new Error();
+  } catch (err) {
+    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
+    if (matches) {
+      return getBaseURL(matches[0]);
+    }
+  }
+  return '/';
 }
-
-// ==================== createBookListing.js ==================== //
-
-// FORM SUBMIT EVENT
-var form = document.getElementById("new-book-form");
-form.addEventListener("submit", addNewBook);
-function bookTemplate(book) {
-  return "\n    <article id=".concat(book.id, " class=\"single-book\">\n    <img src=\"./src/img/book-test.jpg\" alt=\"\" />\n    <div class=\"book-info\">\n      <h3 class=\"single-book__name\">").concat(book.name, "</h3>\n      <p class=\"single-book__author\">").concat(book.author, "</p>\n      <p class=\"single-book_category\">").concat(book.category, "</p>\n      <p class=\"single-book__years\">").concat(book.year, "</p>\n      <p class=\"single-book__price\">").concat(book.price, "\u20AC</p>\n    </div>\n    <div class=\"book-controls\">\n      <button class=\"btn edit\" onclick=\"editBook(").concat(book.id, ")\">Edit</button>\n      <button class=\"btn delete\">Delete</button>\n    </div>\n  </article>\n      ");
+function getBaseURL(url) {
+  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)?\/[^/]+(?:\?.*)?$/, '$1') + '/';
 }
-function showBooks() {
-  var books = JSON.parse(localStorage.getItem("books"));
-  var booksContainer = document.querySelector(".books-container");
-  books.forEach(function (book) {
-    booksContainer.innerHTML += bookTemplate(book);
-  });
+exports.getBundleURL = getBundleURLCached;
+exports.getBaseURL = getBaseURL;
+},{}],"node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
+var bundle = require('./bundle-url');
+function updateLink(link) {
+  var newLink = link.cloneNode();
+  newLink.onload = function () {
+    link.remove();
+  };
+  newLink.href = link.href.split('?')[0] + '?' + Date.now();
+  link.parentNode.insertBefore(newLink, link.nextSibling);
 }
-window.onload = showBooks;
-
-// ==================== editBook.js ==================== //
-
-function editBook(bookId) {
-  console.log(bookId);
+var cssTimeout = null;
+function reloadCSS() {
+  if (cssTimeout) {
+    return;
+  }
+  cssTimeout = setTimeout(function () {
+    var links = document.querySelectorAll('link[rel="stylesheet"]');
+    for (var i = 0; i < links.length; i++) {
+      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
+        updateLink(links[i]);
+      }
+    }
+    cssTimeout = null;
+  }, 50);
 }
-},{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+module.exports = reloadCSS;
+},{"./bundle-url":"node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"src/sass/styles.css":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+},{"_css_loader":"node_modules/parcel-bundler/src/builtins/css-loader.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -345,5 +341,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js","src/js/index.js"], null)
-//# sourceMappingURL=/js.d818e0ef.js.map
+},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js"], null)
+//# sourceMappingURL=/styles.1c211347.js.map
