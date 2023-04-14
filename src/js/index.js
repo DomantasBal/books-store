@@ -104,6 +104,35 @@ function makeFieldsEditable(bookElement, isEditable) {
   bookElement.querySelectorAll(".editable").forEach((field) => {
     field.contentEditable = isEditable;
   });
+
+  fieldsColorChange(bookElement, isEditable);
+}
+
+function fieldsColorChange(bookElement, isEditable) {
+  // Styling on editing
+  const nameField = bookElement.querySelector(".single-book__name");
+  const authorField = bookElement.querySelector(".single-book__author");
+  const categoryField = bookElement.querySelector(".single-book_category");
+  const yearsField = bookElement.querySelector(".single-book__years");
+  const priceField = bookElement.querySelector(".single-book__price");
+
+  let colorChange = [
+    nameField,
+    authorField,
+    categoryField,
+    yearsField,
+    priceField,
+  ];
+
+  if (isEditable) {
+    for (let color of colorChange) {
+      color.style.background = "#8AFFFF";
+    }
+  } else {
+    for (let color of colorChange) {
+      color.style.background = "none";
+    }
+  }
 }
 
 function saveEditedBook(bookElement, bookId) {
