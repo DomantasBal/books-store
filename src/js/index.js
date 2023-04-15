@@ -52,10 +52,10 @@ function bookTemplate(book) {
     <article id=${book.id} class="single-book">
     <img src="./src/img/book-test.jpg" alt="" />
     <div class="book-info">
-      <h3 class="single-book__name editable">${book.name}</h3>
-      <p class="single-book__author editable">${book.author}</p>
-      <p class="single-book_category editable">${book.category}</p>
-      <p class="single-book__years editable">${book.year}</p>
+      <h3 class="single-book__name editable">Title: ${book.name}</h3>
+      <p class="single-book__author editable">Author: ${book.author}</p>
+      <p class="single-book_category editable">Category: ${book.category}</p>
+      <p class="single-book__years editable">Year: ${book.year}</p>
       <p class="single-book__price editable">${book.price}€</p>
     </div>
     <div class="book-controls">
@@ -67,19 +67,7 @@ function bookTemplate(book) {
       `;
 }
 
-function showBooks() {
-  let books = JSON.parse(localStorage.getItem("books"));
-  const booksContainer = document.querySelector(".books-container");
-
-  if (!Array.isArray(books)) {
-    books = [];
-  }
-
-  //  Populates booksContainer with book templates
-  books.forEach((book) => {
-    booksContainer.innerHTML += bookTemplate(book);
-  });
-
+function bindBookEventListeners() {
   // EDIT BTN FUNC
   const editButtons = document.querySelectorAll(".btn.edit");
   editButtons.forEach((button) => {
@@ -94,13 +82,10 @@ function showBooks() {
   deleteButtons.forEach((button) => {
     button.addEventListener("click", () => {
       const bookId = button.getAttribute("data-book-id");
-
       deleteBook(bookId);
     });
   });
 }
-
-window.addEventListener("load", showBooks);
 
 // ==================== editBook.js ==================== //
 
@@ -207,22 +192,62 @@ function deleteBook(bookId) {
 
 // ==================== filters.js ==================== //
 
+function filterAndRenderBooks() {
+  const authorFilter = document.getElementById("authors-select");
+  const categoryFilter = document.getElementById("category-select");
+  const priceSort = document.getElementById("price-select");
+  const storedBooks = JSON.parse(localStorage.getItem("books"));
+
+  let filteredBooks = storedBooks;
+
+  if (authorFilter !== null && authorFilter.value) {
+    filteredBooks = filteredBooks.filter(
+      (book) => book.author === authorFilter.value
+    );
+  }
+
+  if (categoryFilter !== null && categoryFilter.value) {
+    filteredBooks = filteredBooks.filter(
+      (book) => book.category === categoryFilter.value
+    );
+  }
+
+  if (priceSort !== null && priceSort.value) {
+    filteredBooks.sort((a, b) => {
+      if (priceSort.value === "min-max") {
+        return a.price - b.price;
+      } else if (priceSort.value === "max-min") {
+        return b.price - a.price;
+      }
+      return 0;
+    });
+  }
+
+  const booksContainer = document.querySelector(".books-container");
+  if (booksContainer !== null) {
+    booksContainer.innerHTML = ""; // Clear previous content before adding new ones
+    filteredBooks.forEach((book) => {
+      const bookHtml = bookTemplate(book);
+      if (typeof bookHtml === "string") {
+        booksContainer.innerHTML += bookHtml;
+      }
+    });
+    bindBookEventListeners();
+  }
+}
+
 // AUTHOR FILTER
 const selectAuthor = document.getElementById("authors-select");
-selectAuthor.addEventListener("change", () => {
-  const selectedValue = selectAuthor.value;
-  const data = JSON.parse(localStorage.getItem("books"));
-  const filteredData = data.filter((item) => item.author === selectedValue);
-  console.log(filteredData);
-});
+selectAuthor.addEventListener("change", filterAndRenderBooks);
 
 // CATEGORY FILTER
 const selectCategory = document.getElementById("category-select");
-selectCategory.addEventListener("change", () => {
-  const selectedValue = selectCategory.value;
-  const data = JSON.parse(localStorage.getItem("books"));
-  const filteredData = data.filter((item) => item.author === selectedValue);
-  console.log(filteredData);
-});
+selectCategory.addEventListener("change", filterAndRenderBooks);
 
-// TODO: Write values in the authors select options or link them dynamically with typed inputs somehow
+// PRICE SORT
+const selectPrice = document.getElementById("price-select");
+selectPrice.addEventListener("change", filterAndRenderBooks);
+
+window.addEventListener("load", filterAndRenderBooks);
+
+// ==================== search.js ==================== //

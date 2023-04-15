@@ -23,24 +23,26 @@
       </div>
       <div class="author-filter">
         <select name="" id="authors-select">
+          <option value="">All authors</option>
           <option value="1">Author 1</option>
-          <option value="1">Author 2</option>
-          <option value="1">Author 3</option>
-          <option value="1">Author 4</option>
+          <option value="2">Author 2</option>
+          <option value="jack">Author 3</option>
+          <option value="4">Author 4</option>
         </select>
       </div>
       <div class="category-filter">
         <select name="" id="category-select">
-          <option value="">Front-end</option>
-          <option value="">Back-end</option>
-          <option value="">UI / UX</option>
-          <option value="">Other</option>
+          <option value="">All categories</option>
+          <option value="1">Front-end</option>
+          <option value="2">Back-end</option>
+          <option value="3">UI / UX</option>
+          <option value="4">Other</option>
         </select>
       </div>
       <div class="price-sort">
         <select name="" id="price-select">
-          <option value="">Min - Max</option>
-          <option value="">Max - Min</option>
+          <option value="min-max">Min - Max</option>
+          <option value="max-min">Max - Min</option>
         </select>
       </div>
     </header>
@@ -86,5 +88,6 @@
     </main>
     <!-- Javascript -->
     <script defer src="./src/js/index.js"></script>
+    <script defer src="./src/js/searchBooks.js"></script>
   </body>
 </html>

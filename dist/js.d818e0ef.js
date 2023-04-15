@@ -163,20 +163,9 @@ function addNewBook(event) {
 var form = document.getElementById("new-book-form");
 form.addEventListener("submit", addNewBook);
 function bookTemplate(book) {
-  return "\n    <article id=".concat(book.id, " class=\"single-book\">\n    <img src=\"./src/img/book-test.jpg\" alt=\"\" />\n    <div class=\"book-info\">\n      <h3 class=\"single-book__name editable\">").concat(book.name, "</h3>\n      <p class=\"single-book__author editable\">").concat(book.author, "</p>\n      <p class=\"single-book_category editable\">").concat(book.category, "</p>\n      <p class=\"single-book__years editable\">").concat(book.year, "</p>\n      <p class=\"single-book__price editable\">").concat(book.price, "\u20AC</p>\n    </div>\n    <div class=\"book-controls\">\n      <button class=\"btn edit\" data-book-id=\"").concat(book.id, "\">Edit</button>\n      <button class=\"btn save\" data-book-id=\"").concat(book.id, "\" style=\"display:none\">Save</button>\n      <button class=\"btn delete\" data-book-id=\"").concat(book.id, "\">Delete</button>\n    </div>\n  </article>\n      ");
+  return "\n    <article id=".concat(book.id, " class=\"single-book\">\n    <img src=\"./src/img/book-test.jpg\" alt=\"\" />\n    <div class=\"book-info\">\n      <h3 class=\"single-book__name editable\">Title: ").concat(book.name, "</h3>\n      <p class=\"single-book__author editable\">Author: ").concat(book.author, "</p>\n      <p class=\"single-book_category editable\">Category: ").concat(book.category, "</p>\n      <p class=\"single-book__years editable\">Year: ").concat(book.year, "</p>\n      <p class=\"single-book__price editable\">").concat(book.price, "\u20AC</p>\n    </div>\n    <div class=\"book-controls\">\n      <button class=\"btn edit\" data-book-id=\"").concat(book.id, "\">Edit</button>\n      <button class=\"btn save\" data-book-id=\"").concat(book.id, "\" style=\"display:none\">Save</button>\n      <button class=\"btn delete\" data-book-id=\"").concat(book.id, "\">Delete</button>\n    </div>\n  </article>\n      ");
 }
-function showBooks() {
-  var books = JSON.parse(localStorage.getItem("books"));
-  var booksContainer = document.querySelector(".books-container");
-  if (!Array.isArray(books)) {
-    books = [];
-  }
-
-  //  Populates booksContainer with book templates
-  books.forEach(function (book) {
-    booksContainer.innerHTML += bookTemplate(book);
-  });
-
+function bindBookEventListeners() {
   // EDIT BTN FUNC
   var editButtons = document.querySelectorAll(".btn.edit");
   editButtons.forEach(function (button) {
@@ -195,7 +184,6 @@ function showBooks() {
     });
   });
 }
-window.addEventListener("load", showBooks);
 
 // ==================== editBook.js ==================== //
 
@@ -304,29 +292,59 @@ function deleteBook(bookId) {
 
 // ==================== filters.js ==================== //
 
+function filterAndRenderBooks() {
+  var authorFilter = document.getElementById("authors-select");
+  var categoryFilter = document.getElementById("category-select");
+  var priceSort = document.getElementById("price-select");
+  var storedBooks = JSON.parse(localStorage.getItem("books"));
+  var filteredBooks = storedBooks;
+  if (authorFilter !== null && authorFilter.value) {
+    filteredBooks = filteredBooks.filter(function (book) {
+      return book.author === authorFilter.value;
+    });
+  }
+  if (categoryFilter !== null && categoryFilter.value) {
+    filteredBooks = filteredBooks.filter(function (book) {
+      return book.category === categoryFilter.value;
+    });
+  }
+  if (priceSort !== null && priceSort.value) {
+    filteredBooks.sort(function (a, b) {
+      if (priceSort.value === "min-max") {
+        return a.price - b.price;
+      } else if (priceSort.value === "max-min") {
+        return b.price - a.price;
+      }
+      return 0;
+    });
+  }
+  var booksContainer = document.querySelector(".books-container");
+  if (booksContainer !== null) {
+    booksContainer.innerHTML = ""; // Clear previous content before adding new ones
+    filteredBooks.forEach(function (book) {
+      var bookHtml = bookTemplate(book);
+      if (typeof bookHtml === "string") {
+        booksContainer.innerHTML += bookHtml;
+      }
+    });
+    bindBookEventListeners();
+  }
+}
+
 // AUTHOR FILTER
 var selectAuthor = document.getElementById("authors-select");
-selectAuthor.addEventListener("change", function () {
-  var selectedValue = selectAuthor.value;
-  var data = JSON.parse(localStorage.getItem("books"));
-  var filteredData = data.filter(function (item) {
-    return item.author === selectedValue;
-  });
-  console.log(filteredData);
-});
+selectAuthor.addEventListener("change", filterAndRenderBooks);
 
 // CATEGORY FILTER
 var selectCategory = document.getElementById("category-select");
-selectCategory.addEventListener("change", function () {
-  var selectedValue = selectCategory.value;
-  var data = JSON.parse(localStorage.getItem("books"));
-  var filteredData = data.filter(function (item) {
-    return item.author === selectedValue;
-  });
-  console.log(filteredData);
-});
+selectCategory.addEventListener("change", filterAndRenderBooks);
 
-// TODO: Write values in the authors select options or link them dynamically with typed media somehow
+// PRICE SORT
+var selectPrice = document.getElementById("price-select");
+selectPrice.addEventListener("change", filterAndRenderBooks);
+window.addEventListener("load", filterAndRenderBooks);
+
+// ==================== search.js ==================== //
 },{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -352,7 +370,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50068" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56910" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
