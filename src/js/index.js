@@ -22,6 +22,20 @@ function addNewBook(event) {
 
   const booksArray = Array.isArray(storedBooks) ? storedBooks : [];
 
+  const priceInput = form.elements[4];
+  const price = parseFloat(priceInput.value);
+
+  // Remove any existing error message and reset border color
+  removeErrorMessage(priceInput);
+  priceInput.style.borderColor = "";
+
+  // Check if the price is a valid number
+  if (isNaN(price)) {
+    handleInvalidInput(priceInput);
+
+    return;
+  }
+
   const book = new Book(
     storedBooks.length + 1,
     form.elements[0].value,
@@ -42,6 +56,22 @@ function addNewBook(event) {
   location.reload();
 }
 
+function handleInvalidInput(inputElement) {
+  inputElement.style.borderColor = "red";
+  const errorMessage = document.createElement("span");
+  errorMessage.innerText = "Please enter a valid number for the price.";
+  errorMessage.style.color = "red";
+  errorMessage.classList.add("error-message");
+  inputElement.insertAdjacentElement("beforebegin", errorMessage);
+}
+
+function removeErrorMessage(inputElement) {
+  const errorMessage = inputElement.previousElementSibling;
+  if (errorMessage && errorMessage.classList.contains("error-message")) {
+    errorMessage.remove();
+  }
+}
+
 // ==================== createBookListing.js ==================== //
 
 // FORM SUBMIT EVENT
@@ -51,7 +81,7 @@ form.addEventListener("submit", addNewBook);
 function bookTemplate(book) {
   return `
     <article id=${book.id} class="single-book">
-    <img src="./src/img/book-test.jpg" alt="" />
+    <img src="${book.artwork}" />
     <div class="book-info">
       <h3 class="single-book__name editable">Title: ${book.name}</h3>
       <p class="single-book__author editable">Author: ${book.author}</p>
@@ -247,8 +277,9 @@ function filterAndRenderBooks() {
   }
 
   const booksContainer = document.querySelector(".books-container");
+
   if (booksContainer !== null) {
-    booksContainer.innerHTML = ""; // Clear previous content before adding new ones
+    booksContainer.innerHTML = "";
     filteredBooks.forEach((book) => {
       const bookHtml = bookTemplate(book);
       if (typeof bookHtml === "string") {
@@ -288,15 +319,23 @@ function searchBooks() {
   );
 
   const booksContainer = document.querySelector(".books-container");
+  // const emptyMessage = document.querySelector(".empty-message");
+
   if (booksContainer !== null) {
     booksContainer.innerHTML = "";
-    filteredBooks.forEach((book) => {
-      const bookHtml = bookTemplate(book);
-      if (typeof bookHtml === "string") {
-        booksContainer.innerHTML += bookHtml;
-      }
-    });
-    bindBookEventListeners();
+
+    if (filteredBooks.length > 0) {
+      filteredBooks.forEach((book) => {
+        const bookHtml = bookTemplate(book);
+        if (typeof bookHtml === "string") {
+          booksContainer.innerHTML += bookHtml;
+        }
+      });
+
+      bindBookEventListeners();
+    } else {
+      booksContainer.innerText = "No books found.";
+    }
   }
 }
 

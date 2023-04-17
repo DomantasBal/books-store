@@ -146,6 +146,18 @@ function addNewBook(event) {
   var form = document.getElementById("new-book-form");
   var storedBooks = JSON.parse(localStorage.getItem("books")) || [];
   var booksArray = Array.isArray(storedBooks) ? storedBooks : [];
+  var priceInput = form.elements[4];
+  var price = parseFloat(priceInput.value);
+
+  // Remove any existing error message and reset border color
+  removeErrorMessage(priceInput);
+  priceInput.style.borderColor = "";
+
+  // Check if the price is a valid number
+  if (isNaN(price)) {
+    handleInvalidInput(priceInput);
+    return;
+  }
   var book = new Book(storedBooks.length + 1, form.elements[0].value, form.elements[1].value, form.elements[2].value, form.elements[3].value, parseFloat(form.elements[4].value), form.elements[5].value);
 
   // APPEND THE NEW BOOK TO THE ARRAY AT LOCALSTORAGE
@@ -157,6 +169,20 @@ function addNewBook(event) {
   updateFilters();
   location.reload();
 }
+function handleInvalidInput(inputElement) {
+  inputElement.style.borderColor = "red";
+  var errorMessage = document.createElement("span");
+  errorMessage.innerText = "Please enter a valid number for the price.";
+  errorMessage.style.color = "red";
+  errorMessage.classList.add("error-message");
+  inputElement.insertAdjacentElement("beforebegin", errorMessage);
+}
+function removeErrorMessage(inputElement) {
+  var errorMessage = inputElement.previousElementSibling;
+  if (errorMessage && errorMessage.classList.contains("error-message")) {
+    errorMessage.remove();
+  }
+}
 
 // ==================== createBookListing.js ==================== //
 
@@ -164,7 +190,7 @@ function addNewBook(event) {
 var form = document.getElementById("new-book-form");
 form.addEventListener("submit", addNewBook);
 function bookTemplate(book) {
-  return "\n    <article id=".concat(book.id, " class=\"single-book\">\n    <img src=\"./src/img/book-test.jpg\" alt=\"\" />\n    <div class=\"book-info\">\n      <h3 class=\"single-book__name editable\">Title: ").concat(book.name, "</h3>\n      <p class=\"single-book__author editable\">Author: ").concat(book.author, "</p>\n      <p class=\"single-book_category editable\">Category: ").concat(book.category, "</p>\n      <p class=\"single-book__years editable\">Year: ").concat(book.year, "</p>\n      <p class=\"single-book__price editable\">").concat(book.price, "\u20AC</p>\n    </div>\n    <div class=\"book-controls\">\n      <button class=\"btn edit\" data-book-id=\"").concat(book.id, "\">Edit</button>\n      <button class=\"btn save\" data-book-id=\"").concat(book.id, "\" style=\"display:none\">Save</button>\n      <button class=\"btn delete\" data-book-id=\"").concat(book.id, "\">Delete</button>\n    </div>\n  </article>\n      ");
+  return "\n    <article id=".concat(book.id, " class=\"single-book\">\n    <img src=\"").concat(book.artwork, "\" />\n    <div class=\"book-info\">\n      <h3 class=\"single-book__name editable\">Title: ").concat(book.name, "</h3>\n      <p class=\"single-book__author editable\">Author: ").concat(book.author, "</p>\n      <p class=\"single-book_category editable\">Category: ").concat(book.category, "</p>\n      <p class=\"single-book__years editable\">Year: ").concat(book.year, "</p>\n      <p class=\"single-book__price editable\">").concat(book.price, "\u20AC</p>\n    </div>\n    <div class=\"book-controls\">\n      <button class=\"btn edit\" data-book-id=\"").concat(book.id, "\">Edit</button>\n      <button class=\"btn save\" data-book-id=\"").concat(book.id, "\" style=\"display:none\">Save</button>\n      <button class=\"btn delete\" data-book-id=\"").concat(book.id, "\">Delete</button>\n    </div>\n  </article>\n      ");
 }
 function bindBookEventListeners() {
   // EDIT BTN FUNC
@@ -347,7 +373,7 @@ function filterAndRenderBooks() {
   }
   var booksContainer = document.querySelector(".books-container");
   if (booksContainer !== null) {
-    booksContainer.innerHTML = ""; // Clear previous content before adding new ones
+    booksContainer.innerHTML = "";
     filteredBooks.forEach(function (book) {
       var bookHtml = bookTemplate(book);
       if (typeof bookHtml === "string") {
@@ -384,15 +410,21 @@ function searchBooks() {
     return book.name.toLowerCase().includes(searchTerm);
   });
   var booksContainer = document.querySelector(".books-container");
+  // const emptyMessage = document.querySelector(".empty-message");
+
   if (booksContainer !== null) {
     booksContainer.innerHTML = "";
-    filteredBooks.forEach(function (book) {
-      var bookHtml = bookTemplate(book);
-      if (typeof bookHtml === "string") {
-        booksContainer.innerHTML += bookHtml;
-      }
-    });
-    bindBookEventListeners();
+    if (filteredBooks.length > 0) {
+      filteredBooks.forEach(function (book) {
+        var bookHtml = bookTemplate(book);
+        if (typeof bookHtml === "string") {
+          booksContainer.innerHTML += bookHtml;
+        }
+      });
+      bindBookEventListeners();
+    } else {
+      booksContainer.innerText = "No books found.";
+    }
   }
 }
 var searchForm = document.getElementById("search-form");
@@ -425,7 +457,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61920" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55332" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
