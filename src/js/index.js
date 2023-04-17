@@ -38,6 +38,7 @@ function addNewBook(event) {
   //   SETS UPDATED BOOKS ARRAY IN LOCALSTORAGE
   localStorage.setItem("books", JSON.stringify(updatedBooks));
   form.reset();
+  updateFilters();
   location.reload();
 }
 
@@ -187,11 +188,32 @@ function deleteBook(bookId) {
   } else {
     alert("book was not found in database.");
   }
-
+  updateFilters();
   location.reload();
 }
 
 // ==================== filters.js ==================== //
+function updateFilters() {
+  const authorFilter = document.getElementById("authors-select");
+  const categoryFilter = document.getElementById("category-select");
+  const storedBooks = JSON.parse(localStorage.getItem("books"));
+
+  // Get unique authors and categories from storedBooks
+  const authors = [...new Set(storedBooks.map((book) => book.author))];
+  const categories = [...new Set(storedBooks.map((book) => book.category))];
+
+  // Clear and repopulate authorFilter
+  authorFilter.innerHTML = `<option value="">All authors</option>`;
+  authors.forEach((author) =>
+    authorFilter.appendChild(new Option(author, author))
+  );
+
+  // Clear and repopulate categoryFilter
+  categoryFilter.innerHTML = `<option value="">All categories</option>`;
+  categories.forEach((category) =>
+    categoryFilter.appendChild(new Option(category, category))
+  );
+}
 
 function filterAndRenderBooks() {
   const authorFilter = document.getElementById("authors-select");
@@ -249,7 +271,10 @@ selectCategory.addEventListener("change", filterAndRenderBooks);
 const selectPrice = document.getElementById("price-select");
 selectPrice.addEventListener("change", filterAndRenderBooks);
 
-window.addEventListener("load", filterAndRenderBooks);
+window.addEventListener("load", () => {
+  filterAndRenderBooks();
+  updateFilters();
+});
 
 // ==================== search.js ==================== //
 

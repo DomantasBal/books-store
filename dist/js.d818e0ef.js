@@ -154,6 +154,7 @@ function addNewBook(event) {
   //   SETS UPDATED BOOKS ARRAY IN LOCALSTORAGE
   localStorage.setItem("books", JSON.stringify(updatedBooks));
   form.reset();
+  updateFilters();
   location.reload();
 }
 
@@ -288,11 +289,36 @@ function deleteBook(bookId) {
   } else {
     alert("book was not found in database.");
   }
+  updateFilters();
   location.reload();
 }
 
 // ==================== filters.js ==================== //
+function updateFilters() {
+  var authorFilter = document.getElementById("authors-select");
+  var categoryFilter = document.getElementById("category-select");
+  var storedBooks = JSON.parse(localStorage.getItem("books"));
 
+  // Get unique authors and categories from storedBooks
+  var authors = _toConsumableArray(new Set(storedBooks.map(function (book) {
+    return book.author;
+  })));
+  var categories = _toConsumableArray(new Set(storedBooks.map(function (book) {
+    return book.category;
+  })));
+
+  // Clear and repopulate authorFilter
+  authorFilter.innerHTML = "<option value=\"\">All authors</option>";
+  authors.forEach(function (author) {
+    return authorFilter.appendChild(new Option(author, author));
+  });
+
+  // Clear and repopulate categoryFilter
+  categoryFilter.innerHTML = "<option value=\"\">All categories</option>";
+  categories.forEach(function (category) {
+    return categoryFilter.appendChild(new Option(category, category));
+  });
+}
 function filterAndRenderBooks() {
   var authorFilter = document.getElementById("authors-select");
   var categoryFilter = document.getElementById("category-select");
@@ -343,7 +369,10 @@ selectCategory.addEventListener("change", filterAndRenderBooks);
 // PRICE SORT
 var selectPrice = document.getElementById("price-select");
 selectPrice.addEventListener("change", filterAndRenderBooks);
-window.addEventListener("load", filterAndRenderBooks);
+window.addEventListener("load", function () {
+  filterAndRenderBooks();
+  updateFilters();
+});
 
 // ==================== search.js ==================== //
 
@@ -356,7 +385,7 @@ function searchBooks() {
   });
   var booksContainer = document.querySelector(".books-container");
   if (booksContainer !== null) {
-    booksContainer.innerHTML = ""; // Clear previous content before adding new ones
+    booksContainer.innerHTML = "";
     filteredBooks.forEach(function (book) {
       var bookHtml = bookTemplate(book);
       if (typeof bookHtml === "string") {
@@ -396,7 +425,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50016" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61920" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
