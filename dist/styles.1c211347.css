@@ -4,32 +4,178 @@
   padding: 0;
 }
 
-header {
-  display: flex;
-  align-items: center;
-  gap: 20px;
+body,
+html {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
+a {
+  text-decoration: none;
+  color: #473c33;
+}
+
+.btn {
+  padding: 7px 15px;
+  font-weight: 700;
+  outline: 0;
+  border: none;
+  border-radius: 5px;
+  background: #fec868;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: #473c33;
+  color: white;
+}
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background: white;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+  margin: 10px;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+header .close-icon {
+  display: none;
+  cursor: pointer;
+}
+header .search-bar {
+  width: 500px;
+}
+header .search-bar #search-form {
+  display: flex;
+  gap: 5px;
+}
+header .search-bar #search-form input {
+  width: 100%;
+  border-radius: 12px;
+  border: 2px solid #fec868;
+  padding: 10px 0px 10px 10px;
+}
+header .search-bar #search-form input:focus {
+  border-color: black;
+  outline: 0;
+}
+header select {
+  outline: 0;
+  border: none;
+  font-size: 1rem;
+}
+
+@media screen and (max-width: 1376px) {
+  header {
+    transition: top 1s;
+    position: relative;
+    top: -300px;
+  }
+  header .close-icon {
+    display: inline-block;
+    font-size: 1.8rem;
+    position: absolute;
+    top: 15px;
+    left: 90%;
+    color: rgba(0, 0, 0, 0.8);
+  }
+  header .burger {
+    display: inline-block;
+  }
+  #hero {
+    flex-direction: column;
+  }
+  #hero img {
+    display: none;
+  }
+  #hero svg {
+    margin: 300px 200px;
+    width: 100%;
+  }
+  #new-book {
+    display: flex;
+    justify-content: center;
+  }
+  #new-book form {
+    width: 400px;
+  }
+  #new-book form button {
+    margin: 20px 0px;
+    height: 60px;
+    width: 200px;
+  }
+}
+main #hero {
+  width: 100%;
+  height: 60vh;
+  padding: 50px;
+  margin-bottom: 150px;
+  display: flex;
+}
+main #hero .hero-left {
+  width: 100%;
+}
+main #hero .hero-left .hero-text {
+  align-self: flex-start;
+  padding: 80px 80px 20px 80px;
+  font-size: 2rem;
+  color: black;
+}
+main #hero .hero-left .hero-text .btn-hero {
+  margin-top: 40px;
+  font-size: 1.2rem;
+  padding: 15px 50px;
+  transition: transform 1s;
+  min-width: 200px;
+}
+main #hero .hero-left .hero-text .btn-hero:hover {
+  transform: scale(1.2);
+}
+main #hero .hero-right {
+  width: 100%;
+}
+main #hero .hero-right .hero-img img {
+  width: 600px;
+}
 main .btn {
   padding: 5px 15px;
 }
-main #new-book {
-  width: 400px;
-  margin: 30px;
-}
-main #new-book #new-book-form {
-  background: rgba(0, 0, 0, 0.2);
+main #new-book-form {
+  background: #473c33;
   padding: 20px;
   border-radius: 12px;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  flex-wrap: wrap;
   gap: 10px;
-  width: 100%;
+  margin: 30px;
+  height: auto;
 }
-main #new-book #new-book-form input {
+main #new-book-form div {
+  display: flex;
+  flex-direction: column;
+}
+main #new-book-form input {
   height: 40px;
 }
+main #new-book-form input:focus {
+  border-color: #fec868;
+  outline: 0;
+}
+main #new-book-form label {
+  color: white;
+}
+main #new-book-form .btn:hover {
+  background: #abc270;
+}
 main #books {
+  min-height: 500px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -44,6 +190,14 @@ main #books .books-container {
   justify-content: center;
   gap: 20px;
 }
+main #books .books-container .single-book__img img {
+  height: 300px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center top;
+     object-position: center top;
+  width: 100%;
+}
 main #books .books-container .single-book {
   border-radius: 10px;
   background: white;
@@ -51,20 +205,39 @@ main #books .books-container .single-book {
   width: 300px;
   height: auto;
   overflow: hidden;
-}
-main #books .books-container .single-book img {
-  width: 100%;
-}
-main #books .books-container .single-book p {
-  margin: 10px 0px;
+  cursor: pointer;
 }
 main #books .books-container .single-book .book-info {
   margin: 10px;
+}
+main #books .books-container .single-book .book-info div {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+main #books .books-container .single-book .book-info p {
+  margin: 4px 0px;
+}
+main #books .books-container .single-book .book-info .price {
+  font-size: 1.3rem;
+  font-weight: 700;
 }
 main #books .books-container .single-book .book-controls {
   display: flex;
   gap: 10px;
   margin: 10px;
+}
+
+footer {
+  background: #473c33;
+  color: white;
+  width: 100%;
+  margin-top: 60px;
+}
+footer div {
+  padding: 30px;
+  display: flex;
+  align-items: center;
 }
 
 /*# sourceMappingURL=/styles.1c211347.css.map */

@@ -58,11 +58,8 @@ function addNewBook(event) {
 
 function handleInvalidInput(inputElement) {
   inputElement.style.borderColor = "red";
-  const errorMessage = document.createElement("span");
-  errorMessage.innerText = "Please enter a valid number for the price.";
-  errorMessage.style.color = "red";
-  errorMessage.classList.add("error-message");
-  inputElement.insertAdjacentElement("beforebegin", errorMessage);
+  inputElement.value = "";
+  inputElement.placeholder = "Please enter a valid number for the price.";
 }
 
 function removeErrorMessage(inputElement) {
@@ -81,13 +78,25 @@ form.addEventListener("submit", addNewBook);
 function bookTemplate(book) {
   return `
     <article id=${book.id} class="single-book">
+    <div class="single-book__img">
     <img src="${book.artwork}" />
+    </div>
     <div class="book-info">
-      <h3 class="single-book__name editable">Title: ${book.name}</h3>
-      <p class="single-book__author editable">Author: ${book.author}</p>
-      <p class="single-book_category editable">Category: ${book.category}</p>
-      <p class="single-book__years editable">Year: ${book.year}</p>
-      <p class="single-book__price editable">${book.price}€</p>
+    <div>
+    <span>Title:</span> <h3 class="single-book__name editable">${book.name}</h3>
+    </div>
+    <div>
+    <span>Author:</span>  <p class="single-book__author editable">${book.author}</p>
+    </div>
+    <div>
+    <span>Category:</span>  <p class="single-book_category editable">${book.category}</p>
+    </div>
+    <div>
+    <span>Year:</span> <p class="single-book__years editable">${book.year}</p>
+    </div>
+    <div class="price">
+    <p class="single-book__price editable">${book.price}</p><span>€</span> 
+    </div>
     </div>
     <div class="book-controls">
       <button class="btn edit" data-book-id="${book.id}">Edit</button>
@@ -146,7 +155,7 @@ function fieldsColorChange(bookElement, isEditable) {
 
   if (isEditable) {
     for (let color of colorChange) {
-      color.style.background = "#8AFFFF";
+      color.style.background = "#fec868";
     }
   } else {
     for (let color of colorChange) {
@@ -279,14 +288,18 @@ function filterAndRenderBooks() {
   const booksContainer = document.querySelector(".books-container");
 
   if (booksContainer !== null) {
-    booksContainer.innerHTML = "";
-    filteredBooks.forEach((book) => {
-      const bookHtml = bookTemplate(book);
-      if (typeof bookHtml === "string") {
-        booksContainer.innerHTML += bookHtml;
-      }
-    });
-    bindBookEventListeners();
+    if (filteredBooks.length > 0) {
+      booksContainer.innerHTML = "";
+      filteredBooks.forEach((book) => {
+        const bookHtml = bookTemplate(book);
+        if (typeof bookHtml === "string") {
+          booksContainer.innerHTML += bookHtml;
+        }
+      });
+      bindBookEventListeners();
+    } else {
+      booksContainer.innerHTML = "<p>No books listed.</p>";
+    }
   }
 }
 
@@ -319,7 +332,6 @@ function searchBooks() {
   );
 
   const booksContainer = document.querySelector(".books-container");
-  // const emptyMessage = document.querySelector(".empty-message");
 
   if (booksContainer !== null) {
     booksContainer.innerHTML = "";
@@ -343,4 +355,46 @@ const searchForm = document.getElementById("search-form");
 searchForm.addEventListener("submit", (event) => {
   event.preventDefault();
   searchBooks();
+  scrollToSection("books");
+});
+
+// ==================== General Functionality.js ==================== //
+
+const addNewBookBtn = document.querySelector(".add-book");
+
+addNewBookBtn.addEventListener("click", () => {
+  const form = document.getElementById("new-book-form");
+  form.elements[0].focus();
+  scrollToSection("new-book");
+});
+
+const heroBtn = document.querySelector("#hero-btn");
+
+heroBtn.addEventListener("click", () => {
+  scrollToSection("books");
+});
+
+function scrollToSection(id) {
+  const section = document.getElementById(id);
+  section.scrollIntoView({ behavior: "smooth" });
+}
+
+// ==================== Burger.js ==================== //
+
+const burger = document.querySelector(".burger");
+const closeIcon = document.querySelector(".close-icon");
+const header = document.querySelector("#header");
+
+let originalHeaderTop = header.style.top;
+
+burger.addEventListener("click", () => {
+  header.style.opacity = 1;
+  header.style.top = 0;
+  burger.style.opacity = 0;
+});
+
+closeIcon.addEventListener("click", () => {
+  burger.style.opacity = 1;
+  header.style.opacity = 0;
+  header.style.top = originalHeaderTop;
 });

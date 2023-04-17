@@ -171,11 +171,8 @@ function addNewBook(event) {
 }
 function handleInvalidInput(inputElement) {
   inputElement.style.borderColor = "red";
-  var errorMessage = document.createElement("span");
-  errorMessage.innerText = "Please enter a valid number for the price.";
-  errorMessage.style.color = "red";
-  errorMessage.classList.add("error-message");
-  inputElement.insertAdjacentElement("beforebegin", errorMessage);
+  inputElement.value = "";
+  inputElement.placeholder = "Please enter a valid number for the price.";
 }
 function removeErrorMessage(inputElement) {
   var errorMessage = inputElement.previousElementSibling;
@@ -190,7 +187,7 @@ function removeErrorMessage(inputElement) {
 var form = document.getElementById("new-book-form");
 form.addEventListener("submit", addNewBook);
 function bookTemplate(book) {
-  return "\n    <article id=".concat(book.id, " class=\"single-book\">\n    <img src=\"").concat(book.artwork, "\" />\n    <div class=\"book-info\">\n      <h3 class=\"single-book__name editable\">Title: ").concat(book.name, "</h3>\n      <p class=\"single-book__author editable\">Author: ").concat(book.author, "</p>\n      <p class=\"single-book_category editable\">Category: ").concat(book.category, "</p>\n      <p class=\"single-book__years editable\">Year: ").concat(book.year, "</p>\n      <p class=\"single-book__price editable\">").concat(book.price, "\u20AC</p>\n    </div>\n    <div class=\"book-controls\">\n      <button class=\"btn edit\" data-book-id=\"").concat(book.id, "\">Edit</button>\n      <button class=\"btn save\" data-book-id=\"").concat(book.id, "\" style=\"display:none\">Save</button>\n      <button class=\"btn delete\" data-book-id=\"").concat(book.id, "\">Delete</button>\n    </div>\n  </article>\n      ");
+  return "\n    <article id=".concat(book.id, " class=\"single-book\">\n    <div class=\"single-book__img\">\n    <img src=\"").concat(book.artwork, "\" />\n    </div>\n    <div class=\"book-info\">\n    <div>\n    <span>Title:</span> <h3 class=\"single-book__name editable\">").concat(book.name, "</h3>\n    </div>\n    <div>\n    <span>Author:</span>  <p class=\"single-book__author editable\">").concat(book.author, "</p>\n    </div>\n    <div>\n    <span>Category:</span>  <p class=\"single-book_category editable\">").concat(book.category, "</p>\n    </div>\n    <div>\n    <span>Year:</span> <p class=\"single-book__years editable\">").concat(book.year, "</p>\n    </div>\n    <div class=\"price\">\n    <p class=\"single-book__price editable\">").concat(book.price, "</p><span>\u20AC</span> \n    </div>\n    </div>\n    <div class=\"book-controls\">\n      <button class=\"btn edit\" data-book-id=\"").concat(book.id, "\">Edit</button>\n      <button class=\"btn save\" data-book-id=\"").concat(book.id, "\" style=\"display:none\">Save</button>\n      <button class=\"btn delete\" data-book-id=\"").concat(book.id, "\">Delete</button>\n    </div>\n  </article>\n      ");
 }
 function bindBookEventListeners() {
   // EDIT BTN FUNC
@@ -234,7 +231,7 @@ function fieldsColorChange(bookElement, isEditable) {
     try {
       for (_iterator.s(); !(_step = _iterator.n()).done;) {
         var color = _step.value;
-        color.style.background = "#8AFFFF";
+        color.style.background = "#fec868";
       }
     } catch (err) {
       _iterator.e(err);
@@ -373,14 +370,18 @@ function filterAndRenderBooks() {
   }
   var booksContainer = document.querySelector(".books-container");
   if (booksContainer !== null) {
-    booksContainer.innerHTML = "";
-    filteredBooks.forEach(function (book) {
-      var bookHtml = bookTemplate(book);
-      if (typeof bookHtml === "string") {
-        booksContainer.innerHTML += bookHtml;
-      }
-    });
-    bindBookEventListeners();
+    if (filteredBooks.length > 0) {
+      booksContainer.innerHTML = "";
+      filteredBooks.forEach(function (book) {
+        var bookHtml = bookTemplate(book);
+        if (typeof bookHtml === "string") {
+          booksContainer.innerHTML += bookHtml;
+        }
+      });
+      bindBookEventListeners();
+    } else {
+      booksContainer.innerHTML = "<p>No books listed.</p>";
+    }
   }
 }
 
@@ -410,8 +411,6 @@ function searchBooks() {
     return book.name.toLowerCase().includes(searchTerm);
   });
   var booksContainer = document.querySelector(".books-container");
-  // const emptyMessage = document.querySelector(".empty-message");
-
   if (booksContainer !== null) {
     booksContainer.innerHTML = "";
     if (filteredBooks.length > 0) {
@@ -431,6 +430,43 @@ var searchForm = document.getElementById("search-form");
 searchForm.addEventListener("submit", function (event) {
   event.preventDefault();
   searchBooks();
+  scrollToSection("books");
+});
+
+// ==================== General Functionality.js ==================== //
+
+var addNewBookBtn = document.querySelector(".add-book");
+addNewBookBtn.addEventListener("click", function () {
+  var form = document.getElementById("new-book-form");
+  form.elements[0].focus();
+  scrollToSection("new-book");
+});
+var heroBtn = document.querySelector("#hero-btn");
+heroBtn.addEventListener("click", function () {
+  scrollToSection("books");
+});
+function scrollToSection(id) {
+  var section = document.getElementById(id);
+  section.scrollIntoView({
+    behavior: "smooth"
+  });
+}
+
+// ==================== Burger.js ==================== //
+
+var burger = document.querySelector(".burger");
+var closeIcon = document.querySelector(".close-icon");
+var header = document.querySelector("#header");
+var originalHeaderTop = header.style.top;
+burger.addEventListener("click", function () {
+  header.style.opacity = 1;
+  header.style.top = 0;
+  burger.style.opacity = 0;
+});
+closeIcon.addEventListener("click", function () {
+  burger.style.opacity = 1;
+  header.style.opacity = 0;
+  header.style.top = originalHeaderTop;
 });
 },{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -457,7 +493,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55332" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54329" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

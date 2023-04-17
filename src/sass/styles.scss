@@ -1,8 +1,8 @@
-// Color scheme going to use later
-//  #ABC270 - Green
-//  #FEC868 - Sand
-//  #FDA769 - Clay
-//  #473C33 - Coal
+// Variables
+$color-green: #abc270;
+$color-sand: #fec868;
+$color-clay: #fda769;
+$color-coal: #473c33;
 
 * {
   box-sizing: border-box;
@@ -10,38 +10,205 @@
   padding: 0;
 }
 
+body,
+html {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: $color-coal;
+}
+
+.btn {
+  padding: 7px 15px;
+  font-weight: 700;
+  outline: 0;
+  border: none;
+  border-radius: 5px;
+  background: $color-sand;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: #473c33;
+  color: white;
+}
+
 header {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background: white;
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 20px;
+  padding: 20px;
+  margin: 10px;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+
+  .close-icon {
+    display: none;
+    cursor: pointer;
+  }
+
+  .search-bar {
+    width: 500px;
+
+    #search-form {
+      display: flex;
+      gap: 5px;
+      input {
+        width: 100%;
+        border-radius: 12px;
+        border: 2px solid $color-sand;
+        padding: 10px 0px 10px 10px;
+      }
+      input:focus {
+        border-color: black;
+        outline: 0;
+      }
+    }
+  }
+
+  select {
+    outline: 0;
+    border: none;
+    font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 1376px) {
+  header {
+    .close-icon {
+      display: inline-block;
+      font-size: 1.8rem;
+      position: absolute;
+      top: 15px;
+      left: 90%;
+      color: rgba(0, 0, 0, 0.8);
+    }
+
+    .burger {
+      display: inline-block;
+    }
+    transition: top 1s;
+    position: relative;
+    top: -300px;
+  }
+  #hero {
+    flex-direction: column;
+
+    img {
+      display: none;
+    }
+
+    svg {
+      margin: 300px 200px;
+      width: 100%;
+    }
+  }
+
+  #new-book {
+    display: flex;
+    justify-content: center;
+    form {
+      width: 400px;
+      button {
+        margin: 20px 0px;
+        height: 60px;
+        width: 200px;
+      }
+    }
+  }
 }
 
 main {
+  // HERO
+  #hero {
+    width: 100%;
+    height: 60vh;
+    padding: 50px;
+    margin-bottom: 150px;
+    display: flex;
+
+    .hero-left {
+      width: 100%;
+      .hero-text {
+        align-self: flex-start;
+        padding: 80px 80px 20px 80px;
+        font-size: 2rem;
+        color: black;
+
+        .btn-hero {
+          margin-top: 40px;
+          font-size: 1.2rem;
+          padding: 15px 50px;
+          transition: transform 1s;
+          min-width: 200px;
+        }
+
+        .btn-hero:hover {
+          transform: scale(1.2);
+        }
+      }
+    }
+
+    .hero-right {
+      width: 100%;
+      .hero-img {
+        img {
+          width: 600px;
+        }
+      }
+    }
+  }
+
   .btn {
     padding: 5px 15px;
   }
   // NEW BOOK FORM SECTION
-  #new-book {
-    width: 400px;
-    margin: 30px;
 
-    #new-book-form {
-      background: rgba(0, 0, 0, 0.2);
-      padding: 20px;
-      border-radius: 12px;
+  #new-book-form {
+    background: $color-coal;
+    padding: 20px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 30px;
+    height: auto;
+
+    div {
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      width: 100%;
+    }
 
-      input {
-        height: 40px;
-      }
+    input {
+      height: 40px;
+    }
+
+    input:focus {
+      border-color: $color-sand;
+      outline: 0;
+    }
+
+    label {
+      color: white;
+    }
+    .btn:hover {
+      background: $color-green;
     }
   }
 
   //   BOOKS SECTION
   #books {
+    min-height: 500px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -57,6 +224,14 @@ main {
       justify-content: center;
       gap: 20px;
 
+      .single-book__img {
+        img {
+          height: 300px;
+          object-fit: cover;
+          object-position: center top;
+          width: 100%;
+        }
+      }
       .single-book {
         border-radius: 10px;
         background: white;
@@ -64,17 +239,24 @@ main {
         width: 300px;
         height: auto;
         overflow: hidden;
-
-        img {
-          width: 100%;
-        }
-
-        p {
-          margin: 10px 0px;
-        }
+        cursor: pointer;
 
         .book-info {
           margin: 10px;
+
+          div {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+          }
+          p {
+            margin: 4px 0px;
+          }
+
+          .price {
+            font-size: 1.3rem;
+            font-weight: 700;
+          }
         }
 
         .book-controls {
@@ -84,5 +266,17 @@ main {
         }
       }
     }
+  }
+}
+footer {
+  background: $color-coal;
+  color: white;
+  width: 100%;
+  margin-top: 60px;
+
+  div {
+    padding: 30px;
+    display: flex;
+    align-items: center;
   }
 }
