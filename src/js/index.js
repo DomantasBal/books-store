@@ -173,6 +173,7 @@ function editBook(bookId) {
 }
 
 // ==================== deleteBook.js ==================== //
+
 function deleteBook(bookId) {
   const storedBooks = JSON.parse(localStorage.getItem("books"));
   const idNumber = Number(bookId);
@@ -251,3 +252,31 @@ selectPrice.addEventListener("change", filterAndRenderBooks);
 window.addEventListener("load", filterAndRenderBooks);
 
 // ==================== search.js ==================== //
+
+function searchBooks() {
+  const searchInput = document.getElementById("search-input");
+  const searchTerm = searchInput.value.toLowerCase().trim();
+  const storedBooks = JSON.parse(localStorage.getItem("books"));
+
+  let filteredBooks = storedBooks.filter((book) =>
+    book.name.toLowerCase().includes(searchTerm)
+  );
+
+  const booksContainer = document.querySelector(".books-container");
+  if (booksContainer !== null) {
+    booksContainer.innerHTML = "";
+    filteredBooks.forEach((book) => {
+      const bookHtml = bookTemplate(book);
+      if (typeof bookHtml === "string") {
+        booksContainer.innerHTML += bookHtml;
+      }
+    });
+    bindBookEventListeners();
+  }
+}
+
+const searchForm = document.getElementById("search-form");
+searchForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  searchBooks();
+});

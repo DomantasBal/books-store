@@ -273,6 +273,7 @@ function editBook(bookId) {
 }
 
 // ==================== deleteBook.js ==================== //
+
 function deleteBook(bookId) {
   var storedBooks = JSON.parse(localStorage.getItem("books"));
   var idNumber = Number(bookId);
@@ -345,6 +346,31 @@ selectPrice.addEventListener("change", filterAndRenderBooks);
 window.addEventListener("load", filterAndRenderBooks);
 
 // ==================== search.js ==================== //
+
+function searchBooks() {
+  var searchInput = document.getElementById("search-input");
+  var searchTerm = searchInput.value.toLowerCase().trim();
+  var storedBooks = JSON.parse(localStorage.getItem("books"));
+  var filteredBooks = storedBooks.filter(function (book) {
+    return book.name.toLowerCase().includes(searchTerm);
+  });
+  var booksContainer = document.querySelector(".books-container");
+  if (booksContainer !== null) {
+    booksContainer.innerHTML = ""; // Clear previous content before adding new ones
+    filteredBooks.forEach(function (book) {
+      var bookHtml = bookTemplate(book);
+      if (typeof bookHtml === "string") {
+        booksContainer.innerHTML += bookHtml;
+      }
+    });
+    bindBookEventListeners();
+  }
+}
+var searchForm = document.getElementById("search-form");
+searchForm.addEventListener("submit", function (event) {
+  event.preventDefault();
+  searchBooks();
+});
 },{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -370,7 +396,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60653" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50016" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
