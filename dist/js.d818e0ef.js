@@ -117,15 +117,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"src/js/localstorage.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.addNewBook = addNewBook;
-exports.handleInvalidInput = handleInvalidInput;
-exports.removeErrorMessage = removeErrorMessage;
+})({"src/js/index.js":[function(require,module,exports) {
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -187,14 +180,7 @@ function removeErrorMessage(inputElement) {
     errorMessage.remove();
   }
 }
-},{}],"src/js/createBookListing.js":[function(require,module,exports) {
-"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.bindBookEventListeners = bindBookEventListeners;
-exports.bookTemplate = bookTemplate;
 // ==================== createBookListing.js ==================== //
 
 // FORM SUBMIT EVENT
@@ -222,16 +208,7 @@ function bindBookEventListeners() {
     });
   });
 }
-},{}],"src/js/editBook.js":[function(require,module,exports) {
-"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.editBook = editBook;
-function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 // ==================== editBook.js ==================== //
 
 function makeFieldsEditable(bookElement, isEditable) {
@@ -277,6 +254,14 @@ function fieldsColorChange(bookElement, isEditable) {
   }
 }
 function saveEditedBook(bookElement, bookId) {
+  // Retrieve storedBooks from localStorage
+  var storedBooks = JSON.parse(localStorage.getItem("books"));
+  // Find the index of the book to update
+  var bookIndex = storedBooks.findIndex(function (book) {
+    return book.id === bookId;
+  });
+  // Retrieve the original artwork for the book
+  var originalArtwork = storedBooks[bookIndex].artwork;
   var updatedBook = {
     id: bookId,
     name: bookElement.querySelector(".single-book__name").innerText,
@@ -284,15 +269,8 @@ function saveEditedBook(bookElement, bookId) {
     category: bookElement.querySelector(".single-book_category").innerText,
     year: bookElement.querySelector(".single-book__years").innerText,
     price: parseFloat(bookElement.querySelector(".single-book__price").innerText.slice(0, -1)),
-    artwork: ""
+    artwork: originalArtwork // <--- Set the original artwork
   };
-
-  // Retrieve storedBooks from localStorage
-  var storedBooks = JSON.parse(localStorage.getItem("books"));
-  // Find the index of the book to update
-  var bookIndex = storedBooks.findIndex(function (book) {
-    return book.id === bookId;
-  });
 
   // Update the book in the storedBooks array
   storedBooks[bookIndex] = updatedBook;
@@ -318,13 +296,7 @@ function editBook(bookId) {
     saveButton.style.display = "none";
   });
 }
-},{}],"src/js/deleteBook.js":[function(require,module,exports) {
-"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.deleteBook = deleteBook;
 // ==================== deleteBook.js ==================== //
 
 function deleteBook(bookId) {
@@ -344,20 +316,7 @@ function deleteBook(bookId) {
   updateFilters();
   location.reload();
 }
-},{}],"src/js/filters.js":[function(require,module,exports) {
-"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.filterAndRenderBooks = filterAndRenderBooks;
-exports.updateFilters = updateFilters;
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 // ==================== filters.js ==================== //
 function updateFilters() {
   var authorFilter = document.getElementById("authors-select");
@@ -442,13 +401,7 @@ window.addEventListener("load", function () {
   filterAndRenderBooks();
   updateFilters();
 });
-},{}],"src/js/search.js":[function(require,module,exports) {
-"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.searchBooks = searchBooks;
 // ==================== search.js ==================== //
 
 function searchBooks() {
@@ -480,13 +433,7 @@ searchForm.addEventListener("submit", function (event) {
   searchBooks();
   scrollToSection("books");
 });
-},{}],"src/js/general.js":[function(require,module,exports) {
-"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.scrollToSection = scrollToSection;
 // ==================== General.js ==================== //
 
 var addNewBookBtn = document.querySelector(".add-book");
@@ -505,7 +452,7 @@ function scrollToSection(id) {
     behavior: "smooth"
   });
 }
-},{}],"src/js/burger.js":[function(require,module,exports) {
+
 // ==================== Burger.js ==================== //
 
 var burger = document.querySelector(".burger");
@@ -522,74 +469,7 @@ closeIcon.addEventListener("click", function () {
   header.style.opacity = 0;
   header.style.top = originalHeaderTop;
 });
-},{}],"src/js/index.js":[function(require,module,exports) {
-"use strict";
-
-var _localstorage = require("./localstorage.js");
-var _createBookListing = require("./createBookListing.js");
-var _editBook = require("./editBook.js");
-var _deleteBook = require("./deleteBook.js");
-var _filters = require("./filters.js");
-var _search = require("./search.js");
-var _general = require("./general.js");
-require("./burger.js");
-// import { addNewBook } from "./localstorage.js";
-
-// FORM SUBMIT EVENT
-var form = document.getElementById("new-book-form");
-form.addEventListener("submit", _localstorage.addNewBook);
-
-// AUTHOR FILTER
-var selectAuthor = document.getElementById("authors-select");
-selectAuthor.addEventListener("change", _filters.filterAndRenderBooks);
-
-// CATEGORY FILTER
-var selectCategory = document.getElementById("category-select");
-selectCategory.addEventListener("change", _filters.filterAndRenderBooks);
-
-// PRICE SORT
-var selectPrice = document.getElementById("price-select");
-selectPrice.addEventListener("change", _filters.filterAndRenderBooks);
-
-// SEARCH FUNCTION
-var searchForm = document.getElementById("search-form");
-searchForm.addEventListener("submit", function (event) {
-  event.preventDefault();
-  (0, _search.searchBooks)();
-  (0, _general.scrollToSection)("books");
-});
-
-// ADD NEW BOOK BUTTON
-var addNewBookBtn = document.querySelector(".add-book");
-addNewBookBtn.addEventListener("click", function () {
-  var form = document.getElementById("new-book-form");
-  form.elements[0].focus();
-  (0, _general.scrollToSection)("new-book");
-});
-
-// HERO BUTTON
-var heroBtn = document.querySelector("#hero-btn");
-heroBtn.addEventListener("click", function () {
-  (0, _general.scrollToSection)("books");
-});
-window.addEventListener("load", function () {
-  (0, _filters.filterAndRenderBooks)();
-  (0, _filters.updateFilters)();
-});
-
-// GLOBAL FUNCTIONS
-// window.addNewBook = addNewBook;
-// window.handleInvalidInput = handleInvalidInput;
-// window.removeErrorMessage = removeErrorMessage;
-// window.bookTemplate = bookTemplate;
-// window.bindBookEventListeners = bindBookEventListeners;
-// window.editBook = editBook;
-// window.deleteBook = deleteBook;
-// window.updateFilters = updateFilters;
-// window.filterAndRenderBooks = filterAndRenderBooks;
-// window.searchBooks = searchBooks;
-// window.scrollToSection = scrollToSection;
-},{"./localstorage.js":"src/js/localstorage.js","./createBookListing.js":"src/js/createBookListing.js","./editBook.js":"src/js/editBook.js","./deleteBook.js":"src/js/deleteBook.js","./filters.js":"src/js/filters.js","./search.js":"src/js/search.js","./general.js":"src/js/general.js","./burger.js":"src/js/burger.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -614,7 +494,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52911" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59797" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
