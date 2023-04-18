@@ -26,7 +26,7 @@ function fieldsColorChange(bookElement, isEditable) {
 
   if (isEditable) {
     for (let color of colorChange) {
-      color.style.background = "#8AFFFF";
+      color.style.background = "#fec868";
     }
   } else {
     for (let color of colorChange) {
@@ -60,7 +60,7 @@ function saveEditedBook(bookElement, bookId) {
   makeFieldsEditable(bookElement, false);
 }
 
-function editBook(bookId) {
+export function editBook(bookId) {
   const bookElement = document.getElementById(bookId);
 
   const saveButton = bookElement.querySelector(".btn.save");

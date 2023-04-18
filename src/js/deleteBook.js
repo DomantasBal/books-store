@@ -1,6 +1,6 @@
 // ==================== deleteBook.js ==================== //
 
-function deleteBook(bookId) {
+export function deleteBook(bookId) {
   const storedBooks = JSON.parse(localStorage.getItem("books"));
   const idNumber = Number(bookId);
 

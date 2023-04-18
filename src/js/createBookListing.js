@@ -4,16 +4,28 @@
 const form = document.getElementById("new-book-form");
 form.addEventListener("submit", addNewBook);
 
-function bookTemplate(book) {
+export function bookTemplate(book) {
   return `
     <article id=${book.id} class="single-book">
+    <div class="single-book__img">
     <img src="${book.artwork}" />
+    </div>
     <div class="book-info">
-      <h3 class="single-book__name editable">Title: ${book.name}</h3>
-      <p class="single-book__author editable">Author: ${book.author}</p>
-      <p class="single-book_category editable">Category: ${book.category}</p>
-      <p class="single-book__years editable">Year: ${book.year}</p>
-      <p class="single-book__price editable">${book.price}€</p>
+    <div>
+    <span>Title:</span> <h3 class="single-book__name editable">${book.name}</h3>
+    </div>
+    <div>
+    <span>Author:</span>  <p class="single-book__author editable">${book.author}</p>
+    </div>
+    <div>
+    <span>Category:</span>  <p class="single-book_category editable">${book.category}</p>
+    </div>
+    <div>
+    <span>Year:</span> <p class="single-book__years editable">${book.year}</p>
+    </div>
+    <div class="price">
+    <p class="single-book__price editable">${book.price}</p><span>€</span> 
+    </div>
     </div>
     <div class="book-controls">
       <button class="btn edit" data-book-id="${book.id}">Edit</button>
@@ -24,7 +36,7 @@ function bookTemplate(book) {
       `;
 }
 
-function bindBookEventListeners() {
+export function bindBookEventListeners() {
   // EDIT BTN FUNC
   const editButtons = document.querySelectorAll(".btn.edit");
   editButtons.forEach((button) => {

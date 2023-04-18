@@ -41,6 +41,7 @@ header {
   flex-wrap: wrap;
   gap: 20px;
   padding: 20px;
+  margin: 30px;
   border-radius: 8px;
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
@@ -144,6 +145,7 @@ main #books {
 }
 main #books h2 {
   margin: 0px 0px 30px;
+  font-size: 1.8rem;
 }
 main #books .books-container {
   display: flex;
@@ -215,10 +217,10 @@ footer div {
   }
   header .close-icon {
     display: inline-block;
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     position: absolute;
-    top: 15px;
-    left: 90%;
+    top: 8%;
+    left: 96%;
     color: rgba(0, 0, 0, 0.8);
   }
   header .burger {
@@ -242,6 +244,7 @@ footer div {
     flex-direction: column;
     width: 100%;
     align-items: center;
+    margin: 130px 120px;
   }
   #new-book form div {
     width: 100%;
@@ -254,6 +257,11 @@ footer div {
     margin: 20px 0px;
     height: 60px;
     width: 200px;
+  }
+}
+@media screen and (max-width: 376px) {
+  #new-book form {
+    background: blue;
   }
 }
 

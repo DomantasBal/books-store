@@ -117,62 +117,42 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
-var bundleURL = null;
-function getBundleURLCached() {
-  if (!bundleURL) {
-    bundleURL = getBundleURL();
-  }
-  return bundleURL;
+})({"src/js/createBookListing.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.bindBookEventListeners = bindBookEventListeners;
+exports.bookTemplate = bookTemplate;
+// ==================== createBookListing.js ==================== //
+
+// FORM SUBMIT EVENT
+var form = document.getElementById("new-book-form");
+form.addEventListener("submit", addNewBook);
+function bookTemplate(book) {
+  return "\n    <article id=".concat(book.id, " class=\"single-book\">\n    <div class=\"single-book__img\">\n    <img src=\"").concat(book.artwork, "\" />\n    </div>\n    <div class=\"book-info\">\n    <div>\n    <span>Title:</span> <h3 class=\"single-book__name editable\">").concat(book.name, "</h3>\n    </div>\n    <div>\n    <span>Author:</span>  <p class=\"single-book__author editable\">").concat(book.author, "</p>\n    </div>\n    <div>\n    <span>Category:</span>  <p class=\"single-book_category editable\">").concat(book.category, "</p>\n    </div>\n    <div>\n    <span>Year:</span> <p class=\"single-book__years editable\">").concat(book.year, "</p>\n    </div>\n    <div class=\"price\">\n    <p class=\"single-book__price editable\">").concat(book.price, "</p><span>\u20AC</span> \n    </div>\n    </div>\n    <div class=\"book-controls\">\n      <button class=\"btn edit\" data-book-id=\"").concat(book.id, "\">Edit</button>\n      <button class=\"btn save\" data-book-id=\"").concat(book.id, "\" style=\"display:none\">Save</button>\n      <button class=\"btn delete\" data-book-id=\"").concat(book.id, "\">Delete</button>\n    </div>\n  </article>\n      ");
 }
-function getBundleURL() {
-  // Attempt to find the URL of the current script and use that as the base URL
-  try {
-    throw new Error();
-  } catch (err) {
-    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
-    if (matches) {
-      return getBaseURL(matches[0]);
-    }
-  }
-  return '/';
+function bindBookEventListeners() {
+  // EDIT BTN FUNC
+  var editButtons = document.querySelectorAll(".btn.edit");
+  editButtons.forEach(function (button) {
+    button.addEventListener("click", function () {
+      var bookId = button.getAttribute("data-book-id");
+      editBook(bookId);
+    });
+  });
+
+  // DELETE BTN FUNC
+  var deleteButtons = document.querySelectorAll(".btn.delete");
+  deleteButtons.forEach(function (button) {
+    button.addEventListener("click", function () {
+      var bookId = button.getAttribute("data-book-id");
+      deleteBook(bookId);
+    });
+  });
 }
-function getBaseURL(url) {
-  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)?\/[^/]+(?:\?.*)?$/, '$1') + '/';
-}
-exports.getBundleURL = getBundleURLCached;
-exports.getBaseURL = getBaseURL;
-},{}],"node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
-var bundle = require('./bundle-url');
-function updateLink(link) {
-  var newLink = link.cloneNode();
-  newLink.onload = function () {
-    link.remove();
-  };
-  newLink.href = link.href.split('?')[0] + '?' + Date.now();
-  link.parentNode.insertBefore(newLink, link.nextSibling);
-}
-var cssTimeout = null;
-function reloadCSS() {
-  if (cssTimeout) {
-    return;
-  }
-  cssTimeout = setTimeout(function () {
-    var links = document.querySelectorAll('link[rel="stylesheet"]');
-    for (var i = 0; i < links.length; i++) {
-      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
-        updateLink(links[i]);
-      }
-    }
-    cssTimeout = null;
-  }, 50);
-}
-module.exports = reloadCSS;
-},{"./bundle-url":"node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"src/sass/styles.scss":[function(require,module,exports) {
-var reloadCSS = require('_css_loader');
-module.hot.dispose(reloadCSS);
-module.hot.accept(reloadCSS);
-},{"_css_loader":"node_modules/parcel-bundler/src/builtins/css-loader.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -197,7 +177,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50099" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52911" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
@@ -341,5 +321,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js"], null)
-//# sourceMappingURL=/styles.9d9a6958.js.map
+},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js","src/js/createBookListing.js"], null)
+//# sourceMappingURL=/createBookListing.b3b9841d.js.map

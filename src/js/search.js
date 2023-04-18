@@ -1,6 +1,6 @@
 // ==================== search.js ==================== //
 
-function searchBooks() {
+export function searchBooks() {
   const searchInput = document.getElementById("search-input");
   const searchTerm = searchInput.value.toLowerCase().trim();
   const storedBooks = JSON.parse(localStorage.getItem("books"));
@@ -10,7 +10,6 @@ function searchBooks() {
   );
 
   const booksContainer = document.querySelector(".books-container");
-  // const emptyMessage = document.querySelector(".empty-message");
 
   if (booksContainer !== null) {
     booksContainer.innerHTML = "";
@@ -34,4 +33,5 @@ const searchForm = document.getElementById("search-form");
 searchForm.addEventListener("submit", (event) => {
   event.preventDefault();
   searchBooks();
+  scrollToSection("books");
 });

@@ -257,10 +257,5 @@ footer div {
     width: 200px;
   }
 }
-@media screen and (max-width: 376px) {
-  #new-book form {
-    background: blue;
-  }
-}
 
 /*# sourceMappingURL=/styles.9d9a6958.css.map */

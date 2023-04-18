@@ -14,7 +14,7 @@ function Book(id, name, author, category, year, price, artwork) {
 }
 
 // COLLECTS FORM DATA AND CREATES NEW OBJECT
-function addNewBook(event) {
+export function addNewBook(event) {
   event.preventDefault();
   const form = document.getElementById("new-book-form");
 
@@ -56,16 +56,13 @@ function addNewBook(event) {
   location.reload();
 }
 
-function handleInvalidInput(inputElement) {
+export function handleInvalidInput(inputElement) {
   inputElement.style.borderColor = "red";
-  const errorMessage = document.createElement("span");
-  errorMessage.innerText = "Please enter a valid number for the price.";
-  errorMessage.style.color = "red";
-  errorMessage.classList.add("error-message");
-  inputElement.insertAdjacentElement("beforebegin", errorMessage);
+  inputElement.value = "";
+  inputElement.placeholder = "Please enter a valid number for the price.";
 }
 
-function removeErrorMessage(inputElement) {
+export function removeErrorMessage(inputElement) {
   const errorMessage = inputElement.previousElementSibling;
   if (errorMessage && errorMessage.classList.contains("error-message")) {
     errorMessage.remove();

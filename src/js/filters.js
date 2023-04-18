@@ -1,5 +1,5 @@
 // ==================== filters.js ==================== //
-function updateFilters() {
+export function updateFilters() {
   const authorFilter = document.getElementById("authors-select");
   const categoryFilter = document.getElementById("category-select");
   const storedBooks = JSON.parse(localStorage.getItem("books"));
@@ -21,7 +21,7 @@ function updateFilters() {
   );
 }
 
-function filterAndRenderBooks() {
+export function filterAndRenderBooks() {
   const authorFilter = document.getElementById("authors-select");
   const categoryFilter = document.getElementById("category-select");
   const priceSort = document.getElementById("price-select");
@@ -55,14 +55,18 @@ function filterAndRenderBooks() {
   const booksContainer = document.querySelector(".books-container");
 
   if (booksContainer !== null) {
-    booksContainer.innerHTML = "";
-    filteredBooks.forEach((book) => {
-      const bookHtml = bookTemplate(book);
-      if (typeof bookHtml === "string") {
-        booksContainer.innerHTML += bookHtml;
-      }
-    });
-    bindBookEventListeners();
+    if (filteredBooks.length > 0) {
+      booksContainer.innerHTML = "";
+      filteredBooks.forEach((book) => {
+        const bookHtml = bookTemplate(book);
+        if (typeof bookHtml === "string") {
+          booksContainer.innerHTML += bookHtml;
+        }
+      });
+      bindBookEventListeners();
+    } else {
+      booksContainer.innerHTML = "<p>No books listed.</p>";
+    }
   }
 }
 

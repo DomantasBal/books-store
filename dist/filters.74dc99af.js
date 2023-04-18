@@ -117,62 +117,105 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
-var bundleURL = null;
-function getBundleURLCached() {
-  if (!bundleURL) {
-    bundleURL = getBundleURL();
+})({"src/js/filters.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.filterAndRenderBooks = filterAndRenderBooks;
+exports.updateFilters = updateFilters;
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+// ==================== filters.js ==================== //
+function updateFilters() {
+  var authorFilter = document.getElementById("authors-select");
+  var categoryFilter = document.getElementById("category-select");
+  var storedBooks = JSON.parse(localStorage.getItem("books"));
+
+  // Get unique authors and categories from storedBooks
+  var authors = _toConsumableArray(new Set(storedBooks.map(function (book) {
+    return book.author;
+  })));
+  var categories = _toConsumableArray(new Set(storedBooks.map(function (book) {
+    return book.category;
+  })));
+
+  // Clear and repopulate authorFilter
+  authorFilter.innerHTML = "<option value=\"\">All authors</option>";
+  authors.forEach(function (author) {
+    return authorFilter.appendChild(new Option(author, author));
+  });
+
+  // Clear and repopulate categoryFilter
+  categoryFilter.innerHTML = "<option value=\"\">All categories</option>";
+  categories.forEach(function (category) {
+    return categoryFilter.appendChild(new Option(category, category));
+  });
+}
+function filterAndRenderBooks() {
+  var authorFilter = document.getElementById("authors-select");
+  var categoryFilter = document.getElementById("category-select");
+  var priceSort = document.getElementById("price-select");
+  var storedBooks = JSON.parse(localStorage.getItem("books"));
+  var filteredBooks = storedBooks;
+  if (authorFilter !== null && authorFilter.value) {
+    filteredBooks = filteredBooks.filter(function (book) {
+      return book.author === authorFilter.value;
+    });
   }
-  return bundleURL;
-}
-function getBundleURL() {
-  // Attempt to find the URL of the current script and use that as the base URL
-  try {
-    throw new Error();
-  } catch (err) {
-    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
-    if (matches) {
-      return getBaseURL(matches[0]);
-    }
+  if (categoryFilter !== null && categoryFilter.value) {
+    filteredBooks = filteredBooks.filter(function (book) {
+      return book.category === categoryFilter.value;
+    });
   }
-  return '/';
-}
-function getBaseURL(url) {
-  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)?\/[^/]+(?:\?.*)?$/, '$1') + '/';
-}
-exports.getBundleURL = getBundleURLCached;
-exports.getBaseURL = getBaseURL;
-},{}],"node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
-var bundle = require('./bundle-url');
-function updateLink(link) {
-  var newLink = link.cloneNode();
-  newLink.onload = function () {
-    link.remove();
-  };
-  newLink.href = link.href.split('?')[0] + '?' + Date.now();
-  link.parentNode.insertBefore(newLink, link.nextSibling);
-}
-var cssTimeout = null;
-function reloadCSS() {
-  if (cssTimeout) {
-    return;
-  }
-  cssTimeout = setTimeout(function () {
-    var links = document.querySelectorAll('link[rel="stylesheet"]');
-    for (var i = 0; i < links.length; i++) {
-      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
-        updateLink(links[i]);
+  if (priceSort !== null && priceSort.value) {
+    filteredBooks.sort(function (a, b) {
+      if (priceSort.value === "min-max") {
+        return a.price - b.price;
+      } else if (priceSort.value === "max-min") {
+        return b.price - a.price;
       }
+      return 0;
+    });
+  }
+  var booksContainer = document.querySelector(".books-container");
+  if (booksContainer !== null) {
+    if (filteredBooks.length > 0) {
+      booksContainer.innerHTML = "";
+      filteredBooks.forEach(function (book) {
+        var bookHtml = bookTemplate(book);
+        if (typeof bookHtml === "string") {
+          booksContainer.innerHTML += bookHtml;
+        }
+      });
+      bindBookEventListeners();
+    } else {
+      booksContainer.innerHTML = "<p>No books listed.</p>";
     }
-    cssTimeout = null;
-  }, 50);
+  }
 }
-module.exports = reloadCSS;
-},{"./bundle-url":"node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"src/sass/styles.scss":[function(require,module,exports) {
-var reloadCSS = require('_css_loader');
-module.hot.dispose(reloadCSS);
-module.hot.accept(reloadCSS);
-},{"_css_loader":"node_modules/parcel-bundler/src/builtins/css-loader.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+
+// AUTHOR FILTER
+var selectAuthor = document.getElementById("authors-select");
+selectAuthor.addEventListener("change", filterAndRenderBooks);
+
+// CATEGORY FILTER
+var selectCategory = document.getElementById("category-select");
+selectCategory.addEventListener("change", filterAndRenderBooks);
+
+// PRICE SORT
+var selectPrice = document.getElementById("price-select");
+selectPrice.addEventListener("change", filterAndRenderBooks);
+window.addEventListener("load", function () {
+  filterAndRenderBooks();
+  updateFilters();
+});
+},{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -197,7 +240,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50099" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52911" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
@@ -341,5 +384,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js"], null)
-//# sourceMappingURL=/styles.9d9a6958.js.map
+},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js","src/js/filters.js"], null)
+//# sourceMappingURL=/filters.74dc99af.js.map
