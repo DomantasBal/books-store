@@ -301,6 +301,9 @@ footer {
 }
 
 @media screen and (min-width: 1376px) {
+  .burger {
+    display: none;
+  }
   header {
     position: relative;
     top: 0;
