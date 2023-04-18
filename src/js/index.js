@@ -181,7 +181,7 @@ function saveEditedBook(bookElement, bookId) {
     price: parseFloat(
       bookElement.querySelector(".single-book__price").innerText.slice(0, -1)
     ),
-    artwork: originalArtwork, // <--- Set the original artwork
+    artwork: originalArtwork,
   };
 
   // Update the book in the storedBooks array
