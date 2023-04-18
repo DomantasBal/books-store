@@ -82,51 +82,6 @@ header {
   }
 }
 
-@media screen and (max-width: 1376px) {
-  header {
-    .close-icon {
-      display: inline-block;
-      font-size: 1.8rem;
-      position: absolute;
-      top: 15px;
-      left: 90%;
-      color: rgba(0, 0, 0, 0.8);
-    }
-
-    .burger {
-      display: inline-block;
-    }
-    transition: top 1s;
-    position: relative;
-    top: -300px;
-  }
-  #hero {
-    flex-direction: column;
-
-    img {
-      display: none;
-    }
-
-    svg {
-      margin: 300px 200px;
-      width: 100%;
-    }
-  }
-
-  #new-book {
-    display: flex;
-    justify-content: center;
-    form {
-      width: 400px;
-      button {
-        margin: 20px 0px;
-        height: 60px;
-        width: 200px;
-      }
-    }
-  }
-}
-
 main {
   // HERO
   #hero {
@@ -250,8 +205,15 @@ main {
             align-items: center;
             gap: 5px;
           }
-          p {
+
+          p,
+          h3 {
             margin: 4px 0px;
+            max-width: 200px;
+            max-height: 24px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
           }
 
           .price {
@@ -279,5 +241,69 @@ footer {
     padding: 30px;
     display: flex;
     align-items: center;
+  }
+}
+
+@media screen and (max-width: 1376px) {
+  header {
+    .close-icon {
+      display: inline-block;
+      font-size: 1.8rem;
+      position: absolute;
+      top: 15px;
+      left: 90%;
+      color: rgba(0, 0, 0, 0.8);
+    }
+
+    .burger {
+      display: inline-block;
+    }
+    transition: top 1s;
+    position: relative;
+    top: -300px;
+  }
+  #hero {
+    flex-direction: column;
+    img {
+      display: none;
+    }
+
+    svg {
+      margin: 300px 200px;
+      width: 100%;
+    }
+  }
+
+  #new-book {
+    display: flex;
+    justify-content: center;
+
+    form {
+      flex-direction: column;
+      width: 100%;
+      align-items: center;
+
+      div {
+        width: 100%;
+        margin: 5px;
+      }
+
+      input {
+        width: 100%;
+      }
+      button {
+        margin: 20px 0px;
+        height: 60px;
+        width: 200px;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 1376px) {
+  header {
+    position: relative;
+    top: 0;
+    opacity: 1;
   }
 }

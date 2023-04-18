@@ -71,46 +71,6 @@ header select {
   font-size: 1rem;
 }
 
-@media screen and (max-width: 1376px) {
-  header {
-    transition: top 1s;
-    position: relative;
-    top: -300px;
-  }
-  header .close-icon {
-    display: inline-block;
-    font-size: 1.8rem;
-    position: absolute;
-    top: 15px;
-    left: 90%;
-    color: rgba(0, 0, 0, 0.8);
-  }
-  header .burger {
-    display: inline-block;
-  }
-  #hero {
-    flex-direction: column;
-  }
-  #hero img {
-    display: none;
-  }
-  #hero svg {
-    margin: 300px 200px;
-    width: 100%;
-  }
-  #new-book {
-    display: flex;
-    justify-content: center;
-  }
-  #new-book form {
-    width: 400px;
-  }
-  #new-book form button {
-    margin: 20px 0px;
-    height: 60px;
-    width: 200px;
-  }
-}
 main #hero {
   width: 100%;
   height: 60vh;
@@ -216,8 +176,14 @@ main #books .books-container .single-book .book-info div {
   align-items: center;
   gap: 5px;
 }
-main #books .books-container .single-book .book-info p {
+main #books .books-container .single-book .book-info p,
+main #books .books-container .single-book .book-info h3 {
   margin: 4px 0px;
+  max-width: 200px;
+  max-height: 24px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 main #books .books-container .single-book .book-info .price {
   font-size: 1.3rem;
@@ -239,4 +205,61 @@ footer div {
   padding: 30px;
   display: flex;
   align-items: center;
+}
+
+@media screen and (max-width: 1376px) {
+  header {
+    transition: top 1s;
+    position: relative;
+    top: -300px;
+  }
+  header .close-icon {
+    display: inline-block;
+    font-size: 1.8rem;
+    position: absolute;
+    top: 15px;
+    left: 90%;
+    color: rgba(0, 0, 0, 0.8);
+  }
+  header .burger {
+    display: inline-block;
+  }
+  #hero {
+    flex-direction: column;
+  }
+  #hero img {
+    display: none;
+  }
+  #hero svg {
+    margin: 300px 200px;
+    width: 100%;
+  }
+  #new-book {
+    display: flex;
+    justify-content: center;
+  }
+  #new-book form {
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+  }
+  #new-book form div {
+    width: 100%;
+    margin: 5px;
+  }
+  #new-book form input {
+    width: 100%;
+  }
+  #new-book form button {
+    margin: 20px 0px;
+    height: 60px;
+    width: 200px;
+  }
+}
+@media screen and (min-width: 1376px) {
+  header {
+    position: relative;
+    top: 0;
+    opacity: 1;
+  }
 }/*# sourceMappingURL=styles.css.map */
