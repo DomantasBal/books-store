@@ -1,3 +1,4 @@
+/* styles.css */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -40,7 +41,6 @@ header {
   flex-wrap: wrap;
   gap: 20px;
   padding: 20px;
-  margin: 10px;
   border-radius: 8px;
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
@@ -254,13 +254,6 @@ footer div {
     margin: 20px 0px;
     height: 60px;
     width: 200px;
-  }
-}
-@media screen and (min-width: 1376px) {
-  header {
-    position: relative;
-    top: 0;
-    opacity: 1;
   }
 }
 

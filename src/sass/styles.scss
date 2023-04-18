@@ -1,3 +1,5 @@
+/* styles.css */
+
 // Variables
 $color-green: #abc270;
 $color-sand: #fec868;
@@ -47,7 +49,7 @@ header {
   flex-wrap: wrap;
   gap: 20px;
   padding: 20px;
-  margin: 10px;
+  margin: 30px;
   border-radius: 8px;
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 
@@ -172,6 +174,7 @@ main {
 
     h2 {
       margin: 0px 0px 30px;
+      font-size: 1.8rem;
     }
 
     .books-container {
@@ -248,10 +251,10 @@ footer {
   header {
     .close-icon {
       display: inline-block;
-      font-size: 1.8rem;
+      font-size: 1.4rem;
       position: absolute;
-      top: 15px;
-      left: 90%;
+      top: 8%;
+      left: 96%;
       color: rgba(0, 0, 0, 0.8);
     }
 
@@ -282,6 +285,7 @@ footer {
       flex-direction: column;
       width: 100%;
       align-items: center;
+      margin: 130px 120px;
 
       div {
         width: 100%;
@@ -300,13 +304,10 @@ footer {
   }
 }
 
-@media screen and (min-width: 1376px) {
-  .burger {
-    display: none;
-  }
-  header {
-    position: relative;
-    top: 0;
-    opacity: 1;
+@media screen and (max-width: 376px) {
+  #new-book {
+    form {
+      background: blue;
+    }
   }
 }

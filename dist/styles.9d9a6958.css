@@ -155,10 +155,8 @@ main #books .books-container {
 }
 main #books .books-container .single-book__img img {
   height: 300px;
-  -o-object-fit: cover;
-     object-fit: cover;
-  -o-object-position: center top;
-     object-position: center top;
+  object-fit: cover;
+  object-position: center top;
   width: 100%;
 }
 main #books .books-container .single-book {
@@ -263,4 +261,6 @@ footer div {
   #new-book form {
     background: blue;
   }
-}/*# sourceMappingURL=styles.css.map */
+}
+
+/*# sourceMappingURL=/styles.9d9a6958.css.map */
